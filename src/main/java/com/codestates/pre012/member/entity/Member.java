@@ -1,11 +1,16 @@
 package com.codestates.pre012.member.entity;
 
 import com.codestates.pre012.posts.entity.Posts;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.List;
 
+@Setter
+@Getter
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
 public class Member {
 
     @Id
