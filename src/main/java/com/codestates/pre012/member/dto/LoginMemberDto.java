@@ -2,13 +2,11 @@ package com.codestates.pre012.member.dto;
 
 import lombok.Getter;
 
-
 @Getter
-public class ResponseMemberDto {
-
-    private Long memberId;
+public class LoginMemberDto {
 
     private String email;
 
-    private String message;
+    private String password;
+
 }
