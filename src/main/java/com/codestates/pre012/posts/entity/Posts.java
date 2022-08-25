@@ -18,8 +18,5 @@ public class Posts {
 
     @Column(name = "content", nullable = false)
     private String content;
-
-    @JoinColumn(name = "memberId")
-    @ManyToOne
-    private Member member;
+    
 }
