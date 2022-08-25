@@ -24,7 +24,7 @@ public class PostsService {
     /**
      * 새로운 글 등록
      */
-    public Posts savedPosts(Posts postsPost) {
+    public Posts savePosts(Posts postsPost) {
 
         return postsRepository.save(postsPost);
 
@@ -50,7 +50,7 @@ public class PostsService {
     /**
      * 특정 글 조회
      */
-    public Posts lookPost(long postId) {
+    public Posts lookPosts(long postId) {
 
         return existPosts(postId);
     }

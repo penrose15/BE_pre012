@@ -29,11 +29,11 @@ public class PostsController {
     /**
      * 글 관리 ( 글 작성 / 글 수정 /특정 글 조회 / 전체 글 목록 / 글 삭제 )
      */
-    @PostMapping("/board")
+    @PostMapping("/create")
     public ResponseEntity createPosts(@RequestBody PostsDto.Post posts) {
 
         Posts findPosts = mapper.postsPostDtoToPosts(posts);
-        Posts response = postsService.savedPosts(findPosts);
+        Posts response = postsService.savePosts(findPosts);
 
         return new ResponseEntity<>(new SingleResponseDto<>(mapper.postsToPostsDtoResponse(response)), HttpStatus.CREATED);
     }
@@ -51,7 +51,7 @@ public class PostsController {
     @GetMapping("/{posts-id}")
     public ResponseEntity viewPosts(@PathVariable("posts-id") Long postId) {
 
-        Posts response = postsService.lookPost(postId);
+        Posts response = postsService.lookPosts(postId);
 
 
         return new ResponseEntity<>(new SingleResponseDto<>(mapper.postsToPostsDtoResponse(response)), HttpStatus.OK);
