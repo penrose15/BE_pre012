@@ -14,6 +14,8 @@ public class Posts {
     @Column(name = "title", nullable = false)
     private String title;
 
+    private String test;
+
     @Column(name = "content", nullable = false)
     private String content;
 
