@@ -51,7 +51,7 @@ public class PostsController {
     @GetMapping("/{posts-id}")
     public ResponseEntity viewPosts(@PathVariable("posts-id") Long postId) {
 
-        Posts response = postsService.lookPost(postId);
+        Posts response = postsService.lookPosts(postId);
 
 
         return new ResponseEntity<>(new SingleResponseDto<>(mapper.postsToPostsDtoResponse(response)), HttpStatus.OK);

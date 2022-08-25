@@ -31,7 +31,7 @@ public class MemberController {
     public ResponseEntity join(@RequestBody MemberDto.Post postMember) {
 
         Member member = mapper.memberPostDtoToMember(postMember);
-        Member createdMember = memberService.savedMember(member);
+        Member createdMember = memberService.saveMember(member);
 
         return new ResponseEntity<>(new SingleResponseDto<>(mapper.memberToMemberResponseDto(member)) ,HttpStatus.CREATED);
     }
