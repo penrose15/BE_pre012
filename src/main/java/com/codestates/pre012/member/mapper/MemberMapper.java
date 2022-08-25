@@ -1,16 +1,15 @@
 package com.codestates.pre012.member.mapper;
 
-import com.codestates.pre012.member.dto.PostMemberDto;
-import com.codestates.pre012.member.dto.ResponseMemberDto;
+import com.codestates.pre012.member.dto.MemberDto;
 import com.codestates.pre012.member.entity.Member;
 import org.mapstruct.Mapper;
-import org.springframework.http.ResponseEntity;
+import org.mapstruct.ReportingPolicy;
 
-//mapper어노테이션 추가
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface MemberMapper {
 
-    Member PostMemberDtoToMember(PostMemberDto postMemberDto);
+    Member memberPostDtoToMember(MemberDto.Post requestBody);
+    Member memberLoginDtoToMember(MemberDto.Login requestBody);
+    MemberDto.Response memberToMemberResponseDto(Member member);
 
-    ResponseMemberDto MemberToResponseMemberDto(Member member);
 }
