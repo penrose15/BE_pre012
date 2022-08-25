@@ -45,7 +45,7 @@ class MemberControllerTest {
 
 
     @Test
-    void joinTest() throws Exception {
+    void createMemberTest() throws Exception {
 
         // given
         MemberDto.Post post = new MemberDto.Post("hgd@gmail.com","password");
@@ -54,13 +54,13 @@ class MemberControllerTest {
         MemberDto.Response responseBody = new MemberDto.Response(1L, "hgd@gmail.com");
 
         given(mapper.memberPostDtoToMember(Mockito.any(MemberDto.Post.class))).willReturn(new Member());
-        given(memberService.savedMember(Mockito.any(Member.class))).willReturn(new Member());
+        given(memberService.saveMember(Mockito.any(Member.class))).willReturn(new Member());
         given(mapper.memberToMemberResponseDto(Mockito.any(Member.class))).willReturn(responseBody);
 
         // when
         ResultActions actions =
                 mockMvc.perform(
-                        RestDocumentationRequestBuilders.post("/v1/member/join")
+                        RestDocumentationRequestBuilders.post("/v1/member/create")
                                 .accept(MediaType.APPLICATION_JSON)
                                 .contentType(MediaType.APPLICATION_JSON)
                                 .content(content));
@@ -90,7 +90,7 @@ class MemberControllerTest {
     }
 
     @Test
-    void loginTest2() throws Exception {
+    void loginTest() throws Exception {
 
         long memberId = 1L;
         // given

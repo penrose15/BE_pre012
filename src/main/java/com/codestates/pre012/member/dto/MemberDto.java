@@ -5,6 +5,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+
 public class MemberDto {
 
 
@@ -13,7 +16,11 @@ public class MemberDto {
     @NoArgsConstructor
     public static class Login {
 
+        @Email
+        @NotBlank
         private String email;
+
+        @NotBlank
         private String password;
     }
 
@@ -23,6 +30,9 @@ public class MemberDto {
     public static class Patch {
 
         private long memberId;
+
+        @Email
+        @NotBlank
         private String password;
     }
 
@@ -32,8 +42,12 @@ public class MemberDto {
     @NoArgsConstructor
     public static class Post {
 
+        @Email
+        @NotBlank
         private String email;
 
+        @Email
+        @NotBlank
         private String password;
     }
 
@@ -43,8 +57,11 @@ public class MemberDto {
     @Builder
     public static class Response {
 
+        @NotBlank
         private long memberId;
 
+        @Email
+        @NotBlank
         private String email;
 
     }
