@@ -10,6 +10,7 @@ import com.codestates.pre012.posts.service.PostsService;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,23 +27,18 @@ public class PostsController {
         this.mapper = mapper;
     }
 
-    /**
-     * 글 관리 ( 글 작성 / 글 수정 /특정 글 조회 / 전체 글 목록 / 글 삭제 )
-     */
     @PostMapping("/board")
-    public ResponseEntity createPosts(@RequestBody PostsDto.Post posts) {
+    public ResponseEntity createPosts(@Validated @RequestBody PostsDto.Post posts) {
 
-        Posts findPosts = mapper.postsPostDtoToPosts(posts);
-        Posts response = postsService.savedPosts(findPosts);
+        Posts response = postsService.savedPosts(mapper.postsPostDtoToPosts(posts));
 
         return new ResponseEntity<>(new SingleResponseDto<>(mapper.postsToPostsDtoResponse(response)), HttpStatus.CREATED);
     }
 
 
     @PatchMapping("/patch")
-    public ResponseEntity patchPosts(@RequestBody PostsDto.Patch posts) {
+    public ResponseEntity patchPosts(@Validated @RequestBody PostsDto.Patch posts) {
 
-        posts.setPostsId(posts.getPostsId());
         Posts response = postsService.updatePosts(mapper.postsPatchDtoToPosts(posts));
 
         return new ResponseEntity<>(new SingleResponseDto<>(mapper.postsToPostsDtoResponse(response)), HttpStatus.OK);
@@ -53,7 +49,6 @@ public class PostsController {
 
         Posts response = postsService.lookPost(postId);
 
-
         return new ResponseEntity<>(new SingleResponseDto<>(mapper.postsToPostsDtoResponse(response)), HttpStatus.OK);
     }
 
@@ -63,11 +58,10 @@ public class PostsController {
 
         Page<Posts> pagePosts = postsService.findAllPosts(page - 1, size);
 
-        List<Posts> posts = pagePosts.getContent();
+        List<Posts> response = pagePosts.getContent();
 
         return new ResponseEntity<>(
-                new MultiResponseDto<>(mapper.postsToPostsDtoResponses(posts), pagePosts),
-                HttpStatus.OK);
+                new MultiResponseDto<>(mapper.postsToPostsDtoResponses(response), pagePosts), HttpStatus.OK);
     }
 
 

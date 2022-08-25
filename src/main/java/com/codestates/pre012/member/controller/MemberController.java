@@ -7,6 +7,7 @@ import com.codestates.pre012.member.mapper.MemberMapper;
 import com.codestates.pre012.member.service.MemberService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,24 +28,26 @@ public class MemberController {
     /**
      * 회원 관리 ( 회원 가입, 로그인 )
      */
-    @PostMapping("/join")
-    public ResponseEntity join(@RequestBody MemberDto.Post postMember) {
+    @PostMapping("/create")
+    public ResponseEntity createMember(@Validated @RequestBody MemberDto.Post postMember) {
 
         Member member = mapper.memberPostDtoToMember(postMember);
-        Member createdMember = memberService.savedMember(member);
+        Member response = memberService.saveMember(member);
 
-        return new ResponseEntity<>(new SingleResponseDto<>(mapper.memberToMemberResponseDto(member)) ,HttpStatus.CREATED);
+        return new ResponseEntity<>(new SingleResponseDto<>
+                (mapper.memberToMemberResponseDto(response)) ,HttpStatus.CREATED);
     }
 
 
     @PostMapping("/login")
-    public ResponseEntity login(@RequestBody MemberDto.Login loginMember) {
+    public ResponseEntity login(@Validated @RequestBody MemberDto.Login loginMember) {
 
 
         Member member = mapper.memberLoginDtoToMember(loginMember);
-        Member loginMembers = memberService.login(member);
+        Member response = memberService.login(member);
 
-        return new ResponseEntity<>(new SingleResponseDto<>(mapper.memberToMemberResponseDto(loginMembers)),HttpStatus.OK);
+        return new ResponseEntity<>(new SingleResponseDto<>
+                (mapper.memberToMemberResponseDto(response)),HttpStatus.OK);
     }
 
 
