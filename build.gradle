@@ -9,6 +9,7 @@ group = 'com.codestates'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '11'
 
+// snippet 경로 (Rest docs parts)
 ext {
 	set('snippetsDir', file("build/generated-snippets"))
 }
@@ -23,15 +24,27 @@ repositories {
 
 dependencies {
 
+	// Rest Docs 추가
 	testImplementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
 	asciidoctorExtensions 'org.springframework.restdocs:spring-restdocs-asciidoctor'
 
+	// JPA 추가
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+
+	// starter-web 추가
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+
+	// lombok 추가
 	compileOnly 'org.projectlombok:lombok'
-	runtimeOnly 'com.h2database:h2'
-	runtimeOnly 'mysql:mysql-connector-java'
 	annotationProcessor 'org.projectlombok:lombok'
+
+	// 개발용 h2 로컬 저장소 추가
+	runtimeOnly 'com.h2database:h2'
+
+	// 실제 배포용 저장소 추가
+	runtimeOnly 'mysql:mysql-connector-java'
+
+	// test 추가
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
 	//Mapstruct 추가
@@ -40,6 +53,9 @@ dependencies {
 
 	// gson 추가
 	implementation 'com.google.code.gson:gson'
+
+	// 유효성 검사 추가
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
 }
 
 tasks.named('test') {
@@ -52,6 +68,7 @@ tasks.named('asciidoctor') {
 	inputs.dir snippetsDir
 	dependsOn test
 }
+
 
 task copyDocument(type: Copy) {
 	dependsOn asciidoctor
