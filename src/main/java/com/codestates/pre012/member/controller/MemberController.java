@@ -1,17 +1,19 @@
 package com.codestates.pre012.member.controller;
 
-import com.codestates.pre012.member.dto.LoginMemberDto;
-import com.codestates.pre012.member.dto.PostMemberDto;
-import com.codestates.pre012.member.dto.ResponseMemberDto;
+import com.codestates.pre012.dto.SingleResponseDto;
+import com.codestates.pre012.member.dto.MemberDto;
 import com.codestates.pre012.member.entity.Member;
 import com.codestates.pre012.member.mapper.MemberMapper;
 import com.codestates.pre012.member.service.MemberService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-@RequestMapping("/v1/member")
 @RestController
+@RequestMapping("/v1/member")
 public class MemberController {
 
     private final MemberService memberService;
@@ -22,20 +24,27 @@ public class MemberController {
         this.mapper = mapper;
     }
 
+    /**
+     * 회원 관리 ( 회원 가입, 로그인 )
+     */
     @PostMapping("/join")
-    public ResponseEntity createMember(@RequestBody PostMemberDto postMemberDto) {
-        System.out.println(postMemberDto.getEmail() + " : "+postMemberDto.getPassword());
-        Member member = mapper.PostMemberDtoToMember(postMemberDto);
-        System.out.println(member.getEmail() + " : "+member.getPassword());
+    public ResponseEntity join(@RequestBody MemberDto.Post postMember) {
 
-        memberService.savedMember(member);
+        Member member = mapper.memberPostDtoToMember(postMember);
+        Member createdMember = memberService.savedMember(member);
 
-        return new ResponseEntity<>("회원가입 성공!",HttpStatus.CREATED);
+        return new ResponseEntity<>(new SingleResponseDto<>(mapper.memberToMemberResponseDto(member)) ,HttpStatus.CREATED);
     }
 
+
     @PostMapping("/login")
-    public ResponseEntity loginMember(@RequestBody LoginMemberDto loginMemberDto) {
-        return new ResponseEntity<>(HttpStatus.OK);
+    public ResponseEntity login(@RequestBody MemberDto.Login loginMember) {
+
+
+        Member member = mapper.memberLoginDtoToMember(loginMember);
+        Member loginMembers = memberService.login(member);
+
+        return new ResponseEntity<>(new SingleResponseDto<>(mapper.memberToMemberResponseDto(loginMembers)),HttpStatus.OK);
     }
 
 

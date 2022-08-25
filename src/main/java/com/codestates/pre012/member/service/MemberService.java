@@ -1,16 +1,15 @@
 package com.codestates.pre012.member.service;
 
-
-import com.codestates.pre012.member.dto.LoginMemberDto;
 import com.codestates.pre012.member.entity.Member;
 import com.codestates.pre012.member.repository.MemberRepository;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
-//memberservice 추가, repository 의존성 주입
 @Service
 public class MemberService {
+
     private final MemberRepository memberRepository;
 
     public MemberService(MemberRepository memberRepository) {
@@ -18,20 +17,37 @@ public class MemberService {
     }
     //member 회원가입
     public Member savedMember(Member member) {
-        System.out.println(member.getEmail() +"/"+ member.getPassword());
+
         verifiedMemberEmail(member.getEmail());
 
         return memberRepository.save(member);
+
+
     }
-    public Member login(LoginMemberDto loginMemberDto) {
-        Member member = loginVerifiedEmail(loginMemberDto.getEmail());
-        if(member.getPassword().equals(loginMemberDto.getPassword())) {
+    public Member login(Member member) {
+
+        Member member1 = loginVerifiedEmail(member.getEmail());
+
+        if(member1.getPassword().equals(member.getPassword())) {
+            member.setMemberId(member1.getMemberId());
             return member;
         }
         else {
             throw new RuntimeException("wrong password!!");
         }
     }
+
+    public Member findMember (long memberId) {
+        return null;
+    }
+
+    public Page<Member> findMembers(int page, int size) {
+        return null;
+    }
+
+    public void deleteMember(long memberId) {
+    }
+
 
 
     //이메일 존재시 예외처리
