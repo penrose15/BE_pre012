@@ -2,6 +2,9 @@ package com.codestates.pre012.posts.dto;
 
 import lombok.*;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Positive;
+
 public class PostsDto {
 
     @Getter
@@ -9,8 +12,10 @@ public class PostsDto {
     @NoArgsConstructor
     public static class Post {
 
+        @NotBlank
         private String title;
 
+        @NotBlank
         private String content;
 
     }
@@ -21,10 +26,13 @@ public class PostsDto {
     @NoArgsConstructor
     public static class Patch {
 
+        @Positive
         private long postsId;
 
+        @NotBlank
         private String title;
 
+        @NotBlank
         private String content;
 
     }
@@ -34,8 +42,11 @@ public class PostsDto {
     @AllArgsConstructor
     public static class Response {
 
+        @Positive
         private long postsId;
+        @NotBlank
         private String title;
+        @NotBlank
         private String content;
 
         public Response(String title, String content) {
