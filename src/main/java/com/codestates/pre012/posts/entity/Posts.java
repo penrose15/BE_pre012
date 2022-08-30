@@ -1,5 +1,6 @@
 package com.codestates.pre012.posts.entity;
 
+
 import com.codestates.pre012.baseEntity.BaseEntity;
 import com.codestates.pre012.member.entity.Member;
 import lombok.Getter;

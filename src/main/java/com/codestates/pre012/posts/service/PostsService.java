@@ -32,9 +32,6 @@ public class PostsService {
     }
 
 
-    /**
-     * 글 수정
-     */
     public Posts updatePosts(Posts patchPost) {
 
         Posts findPosts = existPosts(patchPost.getPostsId());
