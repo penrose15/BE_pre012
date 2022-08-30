@@ -1,5 +1,6 @@
 package com.codestates.pre012.posts.mapper;
 
+
 import com.codestates.pre012.posts.dto.PostsDto;
 import com.codestates.pre012.posts.entity.Posts;
 import org.mapstruct.Mapper;

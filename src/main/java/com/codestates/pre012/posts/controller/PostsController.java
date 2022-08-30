@@ -30,9 +30,7 @@ public class PostsController {
         this.mapper = mapper;
     }
 
-    /**
-     * 글 관리 ( 글 작성 / 글 수정 /특정 글 조회 / 전체 글 목록 / 글 삭제 )
-     */
+
     @PostMapping("/create")
     public ResponseEntity createPosts(@Valid @RequestBody PostsDto.Post posts) {
 
@@ -45,6 +43,7 @@ public class PostsController {
 
     @PatchMapping("/patch")
     public ResponseEntity patchPosts(@Valid @RequestBody PostsDto.Patch posts) {
+
 
         posts.setPostsId(posts.getPostsId());
         Posts response = postsService.updatePosts(mapper.postsPatchDtoToPosts(posts));
