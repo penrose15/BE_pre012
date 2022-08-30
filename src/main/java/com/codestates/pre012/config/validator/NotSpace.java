@@ -1,4 +1,4 @@
-package com.codestates.pre012.validator;
+package com.codestates.pre012.config.validator;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;

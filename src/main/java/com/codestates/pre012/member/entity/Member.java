@@ -6,6 +6,7 @@ import com.codestates.pre012.posts.entity.Posts;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -27,6 +28,7 @@ public class Member extends BaseEntity {
     @Column(name = "password", nullable = false)
     private String password;
 
+    @Email
     @Column(name = "email", nullable = false, unique = true)
     private String email;
     private String roles; // User, MANAGER, ADMIN

@@ -1,17 +1,20 @@
 package com.codestates.pre012.member.controller;
 
 import com.codestates.pre012.dto.SingleResponseDto;
+import com.codestates.pre012.member.dto.MemberDto;
 import com.codestates.pre012.member.entity.Member;
 import com.codestates.pre012.member.mapper.MemberMapper;
 import com.codestates.pre012.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/v1/member")
+@Validated
 public class RestApiController {
     private final MemberService memberService;
 
@@ -19,8 +22,9 @@ public class RestApiController {
 
     // 추가
     @PostMapping("/create")
-    public ResponseEntity join(@RequestBody Member member) {
+    public ResponseEntity join(@Validated @RequestBody MemberDto.Post postMember) {
 
+        Member member = mapper.memberPostDtoToMember(postMember);
         memberService.saveMember(member);
         return new ResponseEntity<>("회원 가입 완료", HttpStatus.OK);
     }

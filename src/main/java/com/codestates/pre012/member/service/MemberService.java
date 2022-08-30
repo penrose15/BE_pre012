@@ -1,6 +1,9 @@
 package com.codestates.pre012.member.service;
 
 
+import com.codestates.pre012.exception.BusinessLogicException;
+import com.codestates.pre012.exception.ExceptionCode;
+import com.codestates.pre012.member.dto.MemberDto;
 import com.codestates.pre012.member.entity.Member;
 import com.codestates.pre012.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -51,12 +54,12 @@ public class MemberService {
     //이메일 존재시 예외처리
     public void verifiedMemberEmail(String email) {
         Optional<Member> verifyMember = memberRepository.findByEmail(email);
-        if(verifyMember.isPresent()) throw new RuntimeException("member Already Exist");
+        if(verifyMember.isPresent()) throw new BusinessLogicException(ExceptionCode.MEMBER_EXIST);
     }
 
     public Member loginVerifiedEmail(String email) {
         Optional<Member> loginMember = memberRepository.findByEmail(email);
-        Member member = loginMember.orElseThrow(() -> new RuntimeException("email not exist"));
+        Member member = loginMember.orElseThrow(() -> new BusinessLogicException(ExceptionCode.MEMBER_NOT_FOUND));
 
         return member;
     }
@@ -66,7 +69,7 @@ public class MemberService {
                 memberRepository.findById(memberId);
         Member findMember =
                 optionalMember.orElseThrow(() ->
-                        new RuntimeException("memberId not exist"));
+                        new BusinessLogicException(ExceptionCode.INFO_NOT_FOUND));
         return findMember;
     }
 }
