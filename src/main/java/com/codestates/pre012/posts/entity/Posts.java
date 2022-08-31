@@ -2,7 +2,6 @@ package com.codestates.pre012.posts.entity;
 
 
 import com.codestates.pre012.baseEntity.BaseEntity;
-import com.codestates.pre012.likes.Like;
 import com.codestates.pre012.member.entity.Member;
 import com.codestates.pre012.reply.Reply;
 import com.codestates.pre012.tag.Tag_Posts;
@@ -35,14 +34,6 @@ public class Posts extends BaseEntity {
     @ManyToOne
     private Member member;
 
-    @OneToMany(mappedBy = "posts")
-    private List<Like> likes = new ArrayList<>(); //좋야요 수 조회를 위해 양방향 설정
-    public void addLike(Like like) { //양방향 관계 설정을 위해 참조
-        likes.add(like);
-        if(like.getPosts() != this) {  //순환 참조를 막기위해 추가
-            like.setPosts(this);
-        }
-    }
 
     @OneToMany(mappedBy = "posts",
             cascade = CascadeType.ALL,
