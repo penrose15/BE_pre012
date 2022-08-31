@@ -9,6 +9,7 @@ import com.codestates.pre012.posts.entity.Posts;
 import com.codestates.pre012.posts.mapper.PostsMapper;
 import com.codestates.pre012.posts.service.PostsService;
 import com.codestates.pre012.reply.Reply;
+import com.codestates.pre012.reply.ReplyMapper;
 import com.codestates.pre012.reply.ReplyService;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -30,12 +31,14 @@ public class PostsController {
     private final ReplyService replyService; //post상세페이지에 같이 댓글 보여야 하므로 추가
     private final PostsMapper mapper;
 
-    public PostsController(PostsService postsService, ReplyService replyService, PostsMapper mapper) {
+    private final ReplyMapper replyMapper;
+
+    public PostsController(PostsService postsService, ReplyService replyService, PostsMapper mapper, ReplyMapper replyMapper) {
         this.postsService = postsService;
         this.replyService = replyService;
         this.mapper = mapper;
+        this.replyMapper = replyMapper;
     }
-
 
     @PostMapping("/create")
     public ResponseEntity createPosts(@Valid @RequestBody PostsDto.Post posts, @AuthenticationPrincipal PrincipalDetails principal) {
@@ -66,8 +69,9 @@ public class PostsController {
 
         Page<Reply> replies = replyService.getReplies(replyPage, replySize, postId);
         List<Reply> replyList = replies.getContent();
+        List<Object> list = List.of(response,replyList);
 
-        return new ResponseEntity<>(new SingleResponseDto<>(mapper.postsToPostsDtoResponse(response)), HttpStatus.OK);
+        return new ResponseEntity<>(new MultiResponseDto<>(list, replies), HttpStatus.OK);
     }
 
     @GetMapping
