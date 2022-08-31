@@ -30,9 +30,13 @@ public class Posts extends BaseEntity {
     @ManyToOne
     private Member member;
 
-    public Posts(long postsId, String title, String content) {
+    @Column(name = "view")
+    private int view;
+
+    public Posts(long postsId, String title, String content, int view) {
         this.postsId = postsId;
         this.title = title;
         this.content = content;
+        this.view = view;
     }
 }

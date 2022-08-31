@@ -41,12 +41,15 @@ public class PostsService {
     }
 
     public Posts lookPosts(long postId) {
+        Posts posts = postsRepository.findById(postId).orElse(null);
+        int count = postsRepository.updateView(postId);
+        posts.setView(count);
 
         return existPosts(postId);
     }
 
     public Page<Posts> findAllPosts(int page, int size) {
-        return postsRepository.findAll(PageRequest.of(page,size, Sort.by("postsId").descending()));
+        return postsRepository.findAll(PageRequest.of(page, size, Sort.by("postsId").descending()));
     }
 
     public void deletePosts(long postId) {
