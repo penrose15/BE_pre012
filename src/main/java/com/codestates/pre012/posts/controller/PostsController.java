@@ -1,15 +1,19 @@
 package com.codestates.pre012.posts.controller;
 
 
+import com.codestates.pre012.config.oauth.PrincipalDetails;
 import com.codestates.pre012.dto.MultiResponseDto;
 import com.codestates.pre012.dto.SingleResponseDto;
 import com.codestates.pre012.posts.dto.PostsDto;
 import com.codestates.pre012.posts.entity.Posts;
 import com.codestates.pre012.posts.mapper.PostsMapper;
 import com.codestates.pre012.posts.service.PostsService;
+import com.codestates.pre012.reply.Reply;
+import com.codestates.pre012.reply.ReplyService;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,38 +27,45 @@ import java.util.List;
 public class PostsController {
 
     private final PostsService postsService;
+    private final ReplyService replyService; //post상세페이지에 같이 댓글 보여야 하므로 추가
     private final PostsMapper mapper;
 
-    public PostsController(PostsService postsService, PostsMapper mapper) {
+    public PostsController(PostsService postsService, ReplyService replyService, PostsMapper mapper) {
         this.postsService = postsService;
+        this.replyService = replyService;
         this.mapper = mapper;
     }
 
 
     @PostMapping("/create")
-    public ResponseEntity createPosts(@Valid @RequestBody PostsDto.Post posts) {
+    public ResponseEntity createPosts(@Valid @RequestBody PostsDto.Post posts, @AuthenticationPrincipal PrincipalDetails principal) {
 
         Posts findPosts = mapper.postsPostDtoToPosts(posts);
-        Posts response = postsService.savedPosts(findPosts);
+        Posts response = postsService.savedPosts(findPosts, principal.getMember());
 
         return new ResponseEntity<>(new SingleResponseDto<>(mapper.postsToPostsDtoResponse(response)), HttpStatus.CREATED);
     }
 
 
     @PatchMapping("/patch")
-    public ResponseEntity patchPosts(@Valid @RequestBody PostsDto.Patch posts) {
+    public ResponseEntity patchPosts(@Valid @RequestBody PostsDto.Patch posts, @AuthenticationPrincipal PrincipalDetails principal) {
 
 
         posts.setPostsId(posts.getPostsId());
-        Posts response = postsService.updatePosts(mapper.postsPatchDtoToPosts(posts));
+        Posts response = postsService.updatePosts(mapper.postsPatchDtoToPosts(posts), principal.getMember());
 
         return new ResponseEntity<>(new SingleResponseDto<>(mapper.postsToPostsDtoResponse(response)), HttpStatus.OK);
     }
 
     @GetMapping("/{posts-id}")
-    public ResponseEntity viewPosts(@PathVariable("posts-id") @Positive Long postId) {
+    public ResponseEntity viewPosts(@PathVariable("posts-id") @Positive Long postId,
+                                    @RequestParam int replyPage,
+                                    @RequestParam int replySize) {
 
         Posts response = postsService.lookPosts(postId);
+
+        Page<Reply> replies = replyService.getReplies(replyPage, replySize, postId);
+        List<Reply> replyList = replies.getContent();
 
         return new ResponseEntity<>(new SingleResponseDto<>(mapper.postsToPostsDtoResponse(response)), HttpStatus.OK);
     }
@@ -74,9 +85,9 @@ public class PostsController {
 
 
     @DeleteMapping("/{posts-Id}")
-    public ResponseEntity deletePosts(@PathVariable("posts-Id") @Positive Long postId) {
+    public ResponseEntity deletePosts(@PathVariable("posts-Id") @Positive Long postId, @AuthenticationPrincipal PrincipalDetails principal) {
 
-        postsService.deletePosts(postId);
+        postsService.deletePosts(postId, principal.getMember());
 
         return new ResponseEntity<>("삭제 완료", HttpStatus.NO_CONTENT);
     }

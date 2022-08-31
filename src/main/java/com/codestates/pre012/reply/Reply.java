@@ -1,19 +1,22 @@
 package com.codestates.pre012.reply;
 
 import com.codestates.pre012.baseEntity.BaseEntity;
+import com.codestates.pre012.member.entity.Member;
 import com.codestates.pre012.posts.entity.Posts;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Builder
+
 @Setter
 @Getter
 @Entity
+@NoArgsConstructor
 public class Reply extends BaseEntity {
 
     @Id @GeneratedValue
@@ -21,9 +24,13 @@ public class Reply extends BaseEntity {
 
     private String content;
 
-    @ManyToOne
-    @JoinColumn(name = " postsId")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "postsId")
     private Posts posts;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "memberId")
+    private Member member;
 
     public void setPosts(Posts posts) {
         this.posts = posts;
