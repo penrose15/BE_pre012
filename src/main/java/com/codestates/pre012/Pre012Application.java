@@ -18,7 +18,7 @@ public class Pre012Application implements WebMvcConfigurer {
     }
     @Override
     public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/v1/**").allowedOrigins("*");
+        registry.addMapping("/**").allowedOrigins("*");
     }
 
     public static void main(String[] args) {
