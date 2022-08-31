@@ -23,8 +23,6 @@ import java.util.Date;
 
 @RequiredArgsConstructor
 public class JwtAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
-
-
     private final AuthenticationManager authenticationManager;
 
 
