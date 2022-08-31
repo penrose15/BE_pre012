@@ -46,9 +46,12 @@ public class PostsDto {
         private String title;
         private String content;
 
-        public Response(String title, String content) {
+        private int view;
+
+        public Response(String title, String content, int view) {
             this.title = title;
             this.content = content;
+            this.view = view;
         }
     }
 }

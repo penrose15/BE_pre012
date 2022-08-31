@@ -2,6 +2,7 @@ package com.codestates.pre012.posts.service;
 
 import com.codestates.pre012.exception.BusinessLogicException;
 import com.codestates.pre012.exception.ExceptionCode;
+import com.codestates.pre012.member.entity.Member;
 import com.codestates.pre012.posts.entity.Posts;
 import com.codestates.pre012.posts.repository.PostsRepository;
 import org.springframework.data.domain.Page;
@@ -23,8 +24,8 @@ public class PostsService {
     }
 
 
-    public Posts savedPosts(Posts postsPost) {
-
+    public Posts savedPosts(Posts postsPost, Member member) {
+        postsPost.setMember(member);
         return postsRepository.save(postsPost);
     }
 
@@ -43,8 +44,6 @@ public class PostsService {
     public Posts lookPosts(long postId) {
         Posts posts = postsRepository.findById(postId).orElse(null);
         int count = postsRepository.updateView(postId);
-        posts.setView(count);
-
         return existPosts(postId);
     }
 

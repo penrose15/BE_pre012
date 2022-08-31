@@ -2,9 +2,7 @@ package com.codestates.pre012.tag;
 
 import com.codestates.pre012.member.entity.Member;
 import com.codestates.pre012.tag.converter.TagConverter;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
@@ -14,6 +12,8 @@ import java.util.List;
 @Setter
 @Getter
 @Entity
+@AllArgsConstructor
+@NoArgsConstructor
 public class Tag {
 
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)

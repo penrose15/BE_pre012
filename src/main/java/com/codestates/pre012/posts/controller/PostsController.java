@@ -1,8 +1,10 @@
 package com.codestates.pre012.posts.controller;
 
 
+import com.codestates.pre012.config.oauth.PrincipalDetails;
 import com.codestates.pre012.dto.MultiResponseDto;
 import com.codestates.pre012.dto.SingleResponseDto;
+import com.codestates.pre012.member.entity.Member;
 import com.codestates.pre012.posts.dto.PostsDto;
 import com.codestates.pre012.posts.entity.Posts;
 import com.codestates.pre012.posts.mapper.PostsMapper;
@@ -10,6 +12,7 @@ import com.codestates.pre012.posts.service.PostsService;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,10 +35,12 @@ public class PostsController {
 
 
     @PostMapping("/create")
-    public ResponseEntity createPosts(@Valid @RequestBody PostsDto.Post posts) {
+    public ResponseEntity createPosts(@Valid @RequestBody PostsDto.Post posts,
+                                      @AuthenticationPrincipal PrincipalDetails principal) {
 
+        Member member = principal.getMember();
         Posts findPosts = mapper.postsPostDtoToPosts(posts);
-        Posts response = postsService.savedPosts(findPosts);
+        Posts response = postsService.savedPosts(findPosts,member);
 
         return new ResponseEntity<>(new SingleResponseDto<>(mapper.postsToPostsDtoResponse(response)), HttpStatus.CREATED);
     }
@@ -44,17 +49,20 @@ public class PostsController {
     @PatchMapping("/patch")
     public ResponseEntity patchPosts(@Valid @RequestBody PostsDto.Patch posts) {
 
-
         posts.setPostsId(posts.getPostsId());
         Posts response = postsService.updatePosts(mapper.postsPatchDtoToPosts(posts));
 
         return new ResponseEntity<>(new SingleResponseDto<>(mapper.postsToPostsDtoResponse(response)), HttpStatus.OK);
     }
 
+    // 게시글 상세조회
     @GetMapping("/{posts-id}")
     public ResponseEntity viewPosts(@PathVariable("posts-id") @Positive Long postId) {
-
+        // 게시글 내용
         Posts response = postsService.lookPosts(postId);
+
+        // 게시글에 달린 댓글
+
 
         return new ResponseEntity<>(new SingleResponseDto<>(mapper.postsToPostsDtoResponse(response)), HttpStatus.OK);
     }

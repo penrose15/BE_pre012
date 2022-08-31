@@ -3,7 +3,7 @@ package com.codestates.pre012.posts.entity;
 
 import com.codestates.pre012.baseEntity.BaseEntity;
 import com.codestates.pre012.member.entity.Member;
-import com.codestates.pre012.reply.Reply;
+import com.codestates.pre012.reply.entity.Reply;
 import com.codestates.pre012.tag.Tag_Posts;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -62,8 +62,6 @@ public class Posts extends BaseEntity {
 
     @Column(name = "view")
     private int view;
-
-
 
     public Posts(long postsId, String title, String content, int view) {
         this.postsId = postsId;
