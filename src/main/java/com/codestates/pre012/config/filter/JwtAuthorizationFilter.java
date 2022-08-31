@@ -1,12 +1,12 @@
 package com.codestates.pre012.config.filter;
 
 
-
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.codestates.pre012.config.oauth.PrincipalDetails;
 import com.codestates.pre012.member.entity.Member;
 import com.codestates.pre012.member.repository.MemberRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -30,11 +30,9 @@ public class JwtAuthorizationFilter extends BasicAuthenticationFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
-        System.out.println("인증이나 권한이 필요한 주소 요청 됨.");
-
         String jwtHeader = request.getHeader(JwtProperties.HEADER_STRING);
 
-        if(jwtHeader == null || !jwtHeader.startsWith(JwtProperties.TOKEN_PREFIX)) {
+        if (jwtHeader == null || !jwtHeader.startsWith(JwtProperties.TOKEN_PREFIX)) {
             chain.doFilter(request, response);
             return;
         }

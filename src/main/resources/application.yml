@@ -8,7 +8,7 @@ spring:
     username:
     password:
     driver-class-name: com.mysql.cj.jdbc.Driver
-  #    url: jdbc:h2:mem:test
+#      url: jdbc:h2:mem:test  # h2
 
   security:
     oauth2:

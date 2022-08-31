@@ -32,8 +32,7 @@ public class SecurityConfig {
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.csrf().disable();
         http.headers().frameOptions().disable();
-        http.formLogin().disable()
-                .httpBasic().disable()
+        http.httpBasic().disable()
                 .apply(new CustomDsl());
 
         http.authorizeRequests()
