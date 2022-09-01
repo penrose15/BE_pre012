@@ -25,15 +25,13 @@ public class PostsService {
 
     private final PostsRepository postsRepository;
 
-
-    public Posts savedPosts(Posts postsPost , Member member) {
+    public Posts savedPosts(Posts postsPost ,Member member) {
 
         postsPost.setMember(member);
         return postsRepository.save(postsPost);
     }
 
-    public Posts updatePosts(Posts patchPost
-                                    ,Member member) {
+    public Posts updatePosts(Posts patchPost ,Member member) {
         Posts findPosts = existPosts(patchPost.getPostsId());
         if(!findPosts.getMember().equals(member)) throw new RuntimeException("자신의 글만 수정 가능합니다.");
 
@@ -59,8 +57,7 @@ public class PostsService {
 
 
 
-    public void deletePosts(long postId
-                            , Member member) {
+    public void deletePosts(long postId, Member member) {
 
         Posts findPosts = existPosts(postId);
         if(findPosts.getMember().equals(member)) {
