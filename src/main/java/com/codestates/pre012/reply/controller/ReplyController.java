@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 @RequiredArgsConstructor
-@RequestMapping("/v1/posts")
+@RequestMapping("/v1/reply")
 @RestController
 @Validated
 public class ReplyController {
@@ -23,35 +23,34 @@ public class ReplyController {
     private final ReplyService replyService;
     private final ReplyMapper mapper;
 
-    @PostMapping("/reply/{postsId}")
+    @PostMapping("/{postsId}")
     public ResponseEntity createReply(@PathVariable("postsId") long postsId,
                                       @AuthenticationPrincipal PrincipalDetails principal,
                                       @RequestBody ReplyDto.Post replyPost) {
 
         Reply reply = mapper.ReplyPostDtoToReply(replyPost);
-
         replyService.createReply(postsId, principal.getMember(), reply);
 
-        return new ResponseEntity<>(new SingleResponseDto<>(mapper.ReplyToReplyResponse(reply)), HttpStatus.CREATED);
+        return new ResponseEntity<>(new SingleResponseDto<>(mapper.ReplyToReplyDtoResponse(reply)), HttpStatus.CREATED);
     }
 
-    @PatchMapping("/reply/{postsId}/{replyId}")
-    public ResponseEntity updateEntity(@PathVariable("postsId") long postsId,
-                                       @PathVariable("replyId") long replyId,
+    @PatchMapping("/{replyId}")
+    public ResponseEntity updateEntity(@PathVariable("replyId") long replyId,
                                        @AuthenticationPrincipal PrincipalDetails principal,
                                        @RequestBody ReplyDto.Patch replyPatch) {
+
         Reply reply = mapper.ReplyPatchDtoToReply(replyPatch);
         reply.setReplyId(replyId);
-        Reply response = replyService.updateReply(postsId, principal.getMember(), reply);
+        Reply response = replyService.updateReply(principal.getMember(), reply);
 
-        return new ResponseEntity<>(new SingleResponseDto<>(mapper.ReplyToReplyResponse(response)), HttpStatus.OK);
+        return new ResponseEntity<>(new SingleResponseDto<>(mapper.ReplyToReplyDtoResponse(response)), HttpStatus.OK);
     }
 
-    @DeleteMapping("/reply/{postId}/{replyId}")
-    public ResponseEntity deleteEntity(@PathVariable("postId") long postId,
-                                       @AuthenticationPrincipal PrincipalDetails principal,
-                                       @PathVariable("replyId") long replyId) {
-        replyService.deleteReply(postId, principal.getMember(), replyId);
+    @DeleteMapping("/{replyId}")
+    public ResponseEntity deleteEntity(@PathVariable("replyId") long replyId,
+                                       @AuthenticationPrincipal PrincipalDetails principal) {
+
+        replyService.deleteReply(principal.getMember(), replyId);
 
         return new ResponseEntity<>("댓글이 삭제되었습니다.", HttpStatus.NO_CONTENT);
     }

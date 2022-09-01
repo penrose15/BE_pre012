@@ -3,9 +3,8 @@ package com.codestates.pre012.reply.entity;
 import com.codestates.pre012.baseEntity.BaseEntity;
 import com.codestates.pre012.member.entity.Member;
 import com.codestates.pre012.posts.entity.Posts;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+
 import javax.persistence.*;
 
 
@@ -14,7 +13,9 @@ import javax.persistence.*;
 @Setter
 @Getter
 @Entity
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
 public class Reply extends BaseEntity {
 
     @Id @GeneratedValue
@@ -31,5 +32,4 @@ public class Reply extends BaseEntity {
     @JoinColumn(name = "memberId")
     private Member member;
 
-    //setPost()삭제
 }

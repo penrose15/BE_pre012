@@ -23,7 +23,6 @@ public class ReplyService {
     private final PostsRepository postsRepository;
 
 
-    //reply에 member, post 설정
     public Reply createReply(long postsId, Member member, Reply reply) {
 
         reply.setPosts(findPost(postsId));
@@ -32,43 +31,31 @@ public class ReplyService {
         return  replyRepository.save(reply);
     }
 
-    //1. reply 찾기, 2. reply 작성자와 수정하려는 member일치하는지 확인 3. reply 수정
-    public Reply updateReply(long postsId, Member member,Reply reply) {
+    public Reply updateReply(Member member,Reply reply) {
+
         Reply findReply = findReplies(reply.getReplyId());
-
         verifiedMember(member, findReply);
-
-        findReply.setPosts(findPost(postsId));
-
         Optional.ofNullable(reply.getContent()).ifPresent(findReply::setContent);
-
 
         return replyRepository.save(findReply);
     }
 
-    //최신순으로 정렬
-    public Page<Reply> getReplies(int page, int size, long postId) {
-        findPost(postId).getReplies();
-        Page<Reply> replies = replyRepository.findAll(PageRequest.of(page, size, Sort.Direction.DESC,"replyId"));
 
-        return replies;
-    }
+    public void deleteReply(Member member,long replyId) {
 
-    //update와 동일하게 reply작성자와 member가 일치하는지 확인 후 삭제
-    public void deleteReply(long postId,Member member,long replyId) {
         Reply reply = findReplies(replyId);
-
-        if(reply.getPosts().getPostsId() !=postId) throw new BusinessLogicException(ExceptionCode.POSTS_NOT_FOUND);
-
         verifiedMember(member, reply);
+
         replyRepository.deleteById(replyId);
     }
+
 
     private Posts findPost(long postsId) {
         Optional<Posts> posts = postsRepository.findById(postsId);
         Posts findPosts = posts.orElseThrow(() -> new BusinessLogicException(ExceptionCode.POSTS_NOT_FOUND));
         return findPosts;
     }
+
 
     private Reply findReplies(long replyId) {
         Optional<Reply> reply = replyRepository.findById(replyId);
@@ -77,6 +64,7 @@ public class ReplyService {
 
         return findReply;
     }
+
 
     private void verifiedMember(Member member, Reply reply) {
         if(!reply.getMember().getUsername().equals(member.getUsername()))

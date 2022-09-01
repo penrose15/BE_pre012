@@ -9,6 +9,7 @@ import com.codestates.pre012.posts.dto.PostsDto;
 import com.codestates.pre012.posts.entity.Posts;
 import com.codestates.pre012.posts.mapper.PostsMapper;
 import com.codestates.pre012.posts.service.PostsService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,15 +24,11 @@ import java.util.List;
 @RestController
 @RequestMapping("/v1/posts")
 @Validated // queryParameter 유효성 검증에 필요
+@RequiredArgsConstructor
 public class PostsController {
 
     private final PostsService postsService;
     private final PostsMapper mapper;
-
-    public PostsController(PostsService postsService, PostsMapper mapper) {
-        this.postsService = postsService;
-        this.mapper = mapper;
-    }
 
     @PostMapping("/create")
     public ResponseEntity createPosts(@Valid @RequestBody PostsDto.Post posts,
@@ -41,24 +38,27 @@ public class PostsController {
         Posts findPosts = mapper.postsPostDtoToPosts(posts);
         Posts response = postsService.savedPosts(findPosts,member);
 
-        return new ResponseEntity<>(new SingleResponseDto<>(mapper.postsToPostsDtoResponse(response)), HttpStatus.CREATED);
+        return new ResponseEntity<>(new SingleResponseDto<>(mapper.postsToPostsResponse(response)), HttpStatus.CREATED);
     }
 
-    @PatchMapping("/patch")
-    public ResponseEntity patchPosts(@Valid @RequestBody PostsDto.Patch posts, @AuthenticationPrincipal PrincipalDetails principal) {
+    @PatchMapping("/{posts-id}")
+    public ResponseEntity patchPosts(@PathVariable("posts-id") @Positive Long postsId,
+                                     @Valid @RequestBody PostsDto.Post posts,
+                                     @AuthenticationPrincipal PrincipalDetails principal) {
 
-        posts.setPostsId(posts.getPostsId());
-        Posts response = postsService.updatePosts(mapper.postsPatchDtoToPosts(posts) ,principal.getMember());
+        Posts requestPosts = mapper.postsPostDtoToPosts(posts);
 
-        return new ResponseEntity<>(new SingleResponseDto<>(mapper.postsToPostsDtoResponse(response)), HttpStatus.OK);
+        Posts response = postsService.updatePosts(postsId ,requestPosts ,principal.getMember());
+
+        return new ResponseEntity<>(new SingleResponseDto<>(mapper.postsToPostsResponse(response)), HttpStatus.OK);
     }
 
     @GetMapping("/{posts-id}")
-    public ResponseEntity viewPosts(@PathVariable("posts-id") @Positive Long postId) {
+    public ResponseEntity viewPosts(@PathVariable("posts-id") @Positive Long postsId) {
 
-        Posts response = postsService.lookPosts(postId);
+        Posts response = postsService.lookPosts(postsId);
 
-        return new ResponseEntity<>(new SingleResponseDto<>(mapper.postsToPostsDtoResponse(response)), HttpStatus.OK);
+        return new ResponseEntity<>(new SingleResponseDto<>(mapper.postsToSearchResponse(response)), HttpStatus.OK);
     }
 
     @GetMapping
@@ -70,11 +70,12 @@ public class PostsController {
         List<Posts> posts = pagePosts.getContent();
 
         return new ResponseEntity<>(
-                new MultiResponseDto<>(mapper.postsToPostsDtoPostPageResponses(posts), pagePosts),HttpStatus.OK);
+                new MultiResponseDto<>(mapper.postsToPostsDtoResponses(posts), pagePosts), HttpStatus.OK);
     }
 
     @DeleteMapping("/{posts-Id}")
-    public ResponseEntity deletePosts(@PathVariable("posts-Id") @Positive Long postId, @AuthenticationPrincipal PrincipalDetails principal) {
+    public ResponseEntity deletePosts(@PathVariable("posts-Id") @Positive Long postId,
+                                      @AuthenticationPrincipal PrincipalDetails principal) {
 
         postsService.deletePosts(postId, principal.getMember());
 
