@@ -52,7 +52,7 @@ public class Posts extends BaseEntity {
     @BatchSize(size = 100)
     @OneToMany(mappedBy = "posts",
             fetch = FetchType.EAGER,
-            cascade = CascadeType.REMOVE,
+            cascade = {CascadeType.REMOVE, CascadeType.PERSIST},
             orphanRemoval = true) //posts삭제시 reply도 같이 삭제
     @OrderBy("posts_id desc")
     private List<Reply> replies = new ArrayList<>();
