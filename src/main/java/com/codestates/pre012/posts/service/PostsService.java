@@ -6,6 +6,11 @@ import com.codestates.pre012.member.entity.Member;
 import com.codestates.pre012.posts.entity.Posts;
 import com.codestates.pre012.posts.repository.PostsRepository;
 import com.codestates.pre012.reply.ReplyRepository;
+import com.codestates.pre012.tag.entity.Tag;
+import com.codestates.pre012.tag.entity.Tag_Posts;
+import com.codestates.pre012.tag.repository.Tag_PostsRepository;
+import com.codestates.pre012.tag.service.TagService;
+import com.codestates.pre012.tag.service.Tag_PostsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -13,7 +18,9 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -23,7 +30,9 @@ public class PostsService {
     private final PostsRepository postsRepository;
 
     private final ReplyRepository replyRepository;
-
+    private final TagService tagService;
+    private final Tag_PostsService tag_postsService;
+    private final Tag_PostsRepository tag_postsRepository;
 
 
     public Posts savedPosts(Posts postsPost, Member member) {
@@ -49,7 +58,6 @@ public class PostsService {
         Posts posts = postsRepository.findById(postId).orElse(null);
 
         int count = postsRepository.updateView(postId);
-        posts.setView(count);
 
         return existPosts(postId);
     }

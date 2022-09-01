@@ -29,7 +29,6 @@ public class ReplyController {
                                       @AuthenticationPrincipal PrincipalDetails principal,
                                       @RequestBody ReplyDto.Post replyPost) {
 
-        System.out.println("#########################################");
         Reply reply = mapper.ReplyPostDtoToReply(replyPost);
 
         replyService.createReply(postsId,principal.getMember(), reply);

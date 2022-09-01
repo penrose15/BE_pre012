@@ -8,9 +8,11 @@ import com.codestates.pre012.posts.dto.PostsDto;
 import com.codestates.pre012.posts.entity.Posts;
 import com.codestates.pre012.posts.mapper.PostsMapper;
 import com.codestates.pre012.posts.service.PostsService;
-import com.codestates.pre012.reply.Reply;
 import com.codestates.pre012.reply.ReplyMapper;
 import com.codestates.pre012.reply.ReplyService;
+import com.codestates.pre012.tag.TagMapper;
+import com.codestates.pre012.tag.dto.TagDto;
+import com.codestates.pre012.tag.entity.Tag;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,6 +34,7 @@ public class PostsController {
     private final PostsMapper mapper;
 
     private final ReplyMapper replyMapper;
+//    private final TagMapper tagMapper;
 
     public PostsController(PostsService postsService, ReplyService replyService, PostsMapper mapper, ReplyMapper replyMapper) {
         this.postsService = postsService;
@@ -41,9 +44,11 @@ public class PostsController {
     }
 
     @PostMapping("/create")
-    public ResponseEntity createPosts(@Valid @RequestBody PostsDto.Post posts, @AuthenticationPrincipal PrincipalDetails principal) {
+    public ResponseEntity createPosts(@Valid @RequestBody PostsDto.Post posts,
+                                      @AuthenticationPrincipal PrincipalDetails principal) {
 
         Posts findPosts = mapper.postsPostDtoToPosts(posts);
+
         Posts response = postsService.savedPosts(findPosts, principal.getMember());
 
         return new ResponseEntity<>(new SingleResponseDto<>(mapper.postsToPostsDtoResponse(response)), HttpStatus.CREATED);

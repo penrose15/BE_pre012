@@ -1,11 +1,9 @@
-package com.codestates.pre012.tag;
+package com.codestates.pre012.tag.entity;
 
-import com.codestates.pre012.member.entity.Member;
-import com.codestates.pre012.tag.converter.TagConverter;
+import com.codestates.pre012.tag.entity.Tag_Posts;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
 import java.util.List;
@@ -19,9 +17,8 @@ public class Tag {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long tagId;
 
-    //tag를 카테고리내에서 선택 가능하게 하면 좋을 것 같아 enum으로 처리하였습니다.
-    @Convert(converter = TagConverter.class)
-    private String tagName;
+    @Enumerated(value = EnumType.STRING)
+    private TagList tagList;
 
     @OneToMany(mappedBy = "tag")
     private List<Tag_Posts> tag_postsList;

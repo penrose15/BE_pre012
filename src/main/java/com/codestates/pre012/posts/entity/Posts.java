@@ -4,9 +4,7 @@ package com.codestates.pre012.posts.entity;
 import com.codestates.pre012.baseEntity.BaseEntity;
 import com.codestates.pre012.member.entity.Member;
 import com.codestates.pre012.reply.Reply;
-import com.codestates.pre012.tag.Tag_Posts;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.codestates.pre012.tag.entity.Tag_Posts;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -14,6 +12,7 @@ import org.hibernate.annotations.BatchSize;
 
 import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Entity
@@ -67,6 +66,13 @@ public class Posts extends BaseEntity {
 
     @Column(name = "view")
     private int view;
+
+    private String tags;
+
+    public List<String> tagList(String tag) {
+        List<String> list = Arrays.asList(tag.split(" , "));
+        return list;
+    }
 
 
 

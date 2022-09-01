@@ -13,6 +13,7 @@ public class ReplyDto {
     public static class Post {
 
         @NotBlank(message = "공백이 될 수 없습니다.")
+
         private String content;
     }
     @Getter
