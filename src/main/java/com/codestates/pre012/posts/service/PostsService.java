@@ -66,7 +66,10 @@ public class PostsService {
         return postsRepository.findAll(PageRequest.of(page, size, Sort.by("postsId").descending()));
     }
 
-    public void deletePosts(long postId, Member member) {
+
+
+    public void deletePosts(long postId
+                            , Member member) {
 
         Posts findPosts = existPosts(postId);
         if(findPosts.getMember().equals(member)) {
