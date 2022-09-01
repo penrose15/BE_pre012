@@ -44,8 +44,8 @@ public class PostsController {
     }
 
     @PatchMapping("/patch")
-    public ResponseEntity patchPosts(@Valid @RequestBody PostsDto.Patch posts
-            ,@AuthenticationPrincipal PrincipalDetails principal) {
+    public ResponseEntity patchPosts(@Valid @RequestBody PostsDto.Patch posts,
+                                     @AuthenticationPrincipal PrincipalDetails principal) {
 
 
         posts.setPostsId(posts.getPostsId());
@@ -61,7 +61,7 @@ public class PostsController {
 
         Posts response = postsService.lookPosts(postId);
 
-        return new ResponseEntity<>(mapper.postsToPostsDtoResponse(response),HttpStatus.OK);
+        return new ResponseEntity<>(new SingleResponseDto<>(mapper.postsToPostsDtoResponse(response)), HttpStatus.OK);
     }
 
     @GetMapping
@@ -78,7 +78,8 @@ public class PostsController {
     }
 
     @DeleteMapping("/{posts-Id}")
-    public ResponseEntity deletePosts(@PathVariable("posts-Id") @Positive Long postId, @AuthenticationPrincipal PrincipalDetails principal) {
+    public ResponseEntity deletePosts(@PathVariable("posts-Id") @Positive Long postId,
+                                      @AuthenticationPrincipal PrincipalDetails principal) {
 
         postsService.deletePosts(postId, principal.getMember());
 
