@@ -84,7 +84,6 @@ public class PostsController {
 
 
         postsService.deletePosts(postId, principal.getMember());
-
         return new ResponseEntity<>("삭제 완료", HttpStatus.NO_CONTENT);
     }
 }
