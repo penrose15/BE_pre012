@@ -6,11 +6,9 @@ import com.codestates.pre012.member.entity.Member;
 import com.codestates.pre012.posts.entity.Posts;
 import com.codestates.pre012.posts.repository.PostsRepository;
 import com.codestates.pre012.reply.ReplyRepository;
-import com.codestates.pre012.tag.entity.Tag;
-import com.codestates.pre012.tag.entity.Tag_Posts;
-import com.codestates.pre012.tag.repository.Tag_PostsRepository;
-import com.codestates.pre012.tag.service.TagService;
-import com.codestates.pre012.tag.service.Tag_PostsService;
+import com.codestates.pre012.tag.Tag_PostsRepository;
+import com.codestates.pre012.tag.TagService;
+import com.codestates.pre012.tag.Tag_PostsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -18,9 +16,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Service
 @Transactional
