@@ -72,6 +72,7 @@ public class PostsController {
 
         List<Posts> posts = pagePosts.getContent();
 
+
         return new ResponseEntity<>(
                 new MultiResponseDto<>(mapper.postsToPostsDtoPostPageResponses(posts), pagePosts),
                 HttpStatus.OK);
@@ -80,6 +81,7 @@ public class PostsController {
     @DeleteMapping("/{posts-Id}")
     public ResponseEntity deletePosts(@PathVariable("posts-Id") @Positive Long postId,
                                       @AuthenticationPrincipal PrincipalDetails principal) {
+
 
         postsService.deletePosts(postId, principal.getMember());
 
