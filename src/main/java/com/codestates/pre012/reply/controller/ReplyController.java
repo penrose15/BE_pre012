@@ -1,52 +1,60 @@
 package com.codestates.pre012.reply.controller;
 
 import com.codestates.pre012.config.oauth.PrincipalDetails;
-import com.codestates.pre012.reply.dto.ReplyDto;
+import com.codestates.pre012.dto.SingleResponseDto;
 import com.codestates.pre012.reply.entity.Reply;
 import com.codestates.pre012.reply.mapper.ReplyMapper;
 import com.codestates.pre012.reply.service.ReplyService;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.codestates.pre012.reply.dto.ReplyDto;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+
+@RequiredArgsConstructor
+@RequestMapping("/v1/posts")
 @RestController
-@RequestMapping("/v1/reply")
+@Validated
 public class ReplyController {
 
     private final ReplyService replyService;
-
     private final ReplyMapper mapper;
 
-    public ReplyController(ReplyService replyService, ReplyMapper mapper) {
-        this.replyService = replyService;
-        this.mapper = mapper;
+    @PostMapping("/reply/{postsId}")
+    public ResponseEntity createReply(@PathVariable("postsId") long postsId,
+                                      @AuthenticationPrincipal PrincipalDetails principal,
+                                      @RequestBody ReplyDto.Post replyPost) {
+
+        Reply reply = mapper.ReplyPostDtoToReply(replyPost);
+
+        replyService.createReply(postsId, principal.getMember(), reply);
+
+        return new ResponseEntity<>(new SingleResponseDto<>(mapper.ReplyToReplyResponse(reply)), HttpStatus.CREATED);
     }
 
-    // 댓글 생성
-    @PostMapping("/reply/{postId}")
-    public ResponseEntity createReply(@PathVariable("postId") Long postId,
-                                      @RequestBody ReplyDto.Post replyDtoPost,
-                                      @AuthenticationPrincipal PrincipalDetails principal) {
-        Reply reply = mapper.ReplyDtoPostToReply(replyDtoPost);
-        Reply newReply = replyService.createReply(postId, principal.getMember(), reply);
-        return new ResponseEntity<>(newReply, HttpStatus.CREATED);
+    @PatchMapping("/reply/{postsId}/{replyId}")
+    public ResponseEntity updateEntity(@PathVariable("postsId") long postsId,
+                                       @PathVariable("replyId") long replyId,
+                                       @AuthenticationPrincipal PrincipalDetails principal,
+                                       @RequestBody ReplyDto.Patch replyPatch) {
+        Reply reply = mapper.ReplyPatchDtoToReply(replyPatch);
+        reply.setReplyId(replyId);
+        Reply response = replyService.updateReply(postsId, principal.getMember(), reply);
+
+        return new ResponseEntity<>(new SingleResponseDto<>(mapper.ReplyToReplyResponse(response)), HttpStatus.OK);
     }
 
-    // 댓글 수정 (본인이 작성한 글을 수정해야 한다.)
-    @PatchMapping("/update/{reply-id}")
-    public ResponseEntity updatedReply(@PathVariable("reply-id") Long id, @RequestBody ReplyDto.Patch replyDtoPatch) {
-    // jwt --> 추출 맞으면 ok
+    @DeleteMapping("/reply/{postId}/{replyId}")
+    public ResponseEntity deleteEntity(@PathVariable("postId") long postId,
+                                       @AuthenticationPrincipal PrincipalDetails principal,
+                                       @PathVariable("replyId") long replyId) {
+        replyService.deleteReply(postId, principal.getMember(), replyId);
 
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>("댓글이 삭제되었습니다.", HttpStatus.NO_CONTENT);
     }
 
-    // 댓글 삭제 (본인이 작성한 글을 삭제해야 한다.)
-    @DeleteMapping("/{reply-id}")
-    public ResponseEntity deleteReply(@PathVariable("reply-id") Long id) {
 
-
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
 }

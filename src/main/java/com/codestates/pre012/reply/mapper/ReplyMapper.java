@@ -1,15 +1,25 @@
 package com.codestates.pre012.reply.mapper;
 
-import com.codestates.pre012.reply.dto.ReplyDto;
+
 import com.codestates.pre012.reply.entity.Reply;
+import com.codestates.pre012.reply.dto.ReplyDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface ReplyMapper {
-    Reply ReplyDtoPostToReply(ReplyDto.Post requestBody);
 
-    Reply ReplyDtoPatchToReply(ReplyDto.Patch requestBody);
+    Reply ReplyPostDtoToReply(ReplyDto.Post replyDto);
+    Reply ReplyPatchDtoToReply(ReplyDto.Patch replyDto);
+    default ReplyDto.Response ReplyToReplyResponse(Reply reply) {
+        ReplyDto.Response response = ReplyDto.Response.builder()
+                .replyId(reply.getReplyId())
+                .postsId(reply.getPosts().getPostsId())
+                .content(reply.getContent())
+                .username(reply.getMember().getUsername())
+                .build();
 
-    ReplyDto.Response ReplyToReplyDtoResponse(Reply reply);
+        return response;
+    }
+
 }

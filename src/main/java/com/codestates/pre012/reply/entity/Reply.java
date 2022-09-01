@@ -3,39 +3,33 @@ package com.codestates.pre012.reply.entity;
 import com.codestates.pre012.baseEntity.BaseEntity;
 import com.codestates.pre012.member.entity.Member;
 import com.codestates.pre012.posts.entity.Posts;
-import lombok.*;
-
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
-@Builder
+
+
+
 @Setter
 @Getter
 @Entity
-@AllArgsConstructor
 @NoArgsConstructor
 public class Reply extends BaseEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id @GeneratedValue
     private long replyId;
 
-    @Column(name = "content")
     private String content;
 
     @ManyToOne
+    @JoinColumn(name = " postsId")
+    private Posts posts;
+
+    //댓글 조회시 member 정보도 같이 띄워야 하므로 FetchType.EAGER 설정
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "memberId")
     private Member member;
 
-    @ManyToOne
-    @JoinColumn(name = "postsId")
-    private Posts posts;
-
-//    public void setPosts(Posts posts) {
-//        this.posts = posts;
-//        if(!posts.getReplies().contains(this)) {
-//            posts.getReplies().add(this);
-//        }
-//    }
+    //setPost()삭제
 }
