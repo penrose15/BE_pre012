@@ -48,8 +48,7 @@ public class Member extends BaseEntity {
     }
 
 
-
-    @OneToMany(mappedBy = "member")
+    @OneToMany(mappedBy = "member", fetch = FetchType.EAGER)
     private List<Posts> posts;
 
     public List<String> getRoleList() {

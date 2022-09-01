@@ -1,9 +1,12 @@
 package com.codestates.pre012.posts.dto;
 
+import com.codestates.pre012.reply.entity.Reply;
 import lombok.*;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Positive;
+import java.util.ArrayList;
+import java.util.List;
 
 public class PostsDto {
 
@@ -45,13 +48,8 @@ public class PostsDto {
         private long postsId;
         private String title;
         private String content;
-
         private int view;
+        private List<Reply> replyList;
 
-        public Response(String title, String content, int view) {
-            this.title = title;
-            this.content = content;
-            this.view = view;
-        }
     }
 }

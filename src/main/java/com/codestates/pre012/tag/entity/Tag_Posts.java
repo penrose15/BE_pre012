@@ -1,7 +1,6 @@
-package com.codestates.pre012.tag;
+package com.codestates.pre012.tag.entity;
 
 import com.codestates.pre012.posts.entity.Posts;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 

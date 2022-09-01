@@ -32,10 +32,10 @@ public class Reply extends BaseEntity {
     @JoinColumn(name = "postsId")
     private Posts posts;
 
-    public void setPosts(Posts posts) {
-        this.posts = posts;
-        if(!posts.getReplies().contains(this)) {
-            posts.getReplies().add(this);
-        }
-    }
+//    public void setPosts(Posts posts) {
+//        this.posts = posts;
+//        if(!posts.getReplies().contains(this)) {
+//            posts.getReplies().add(this);
+//        }
+//    }
 }

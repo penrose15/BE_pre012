@@ -3,21 +3,18 @@ package com.codestates.pre012.reply.service;
 import com.codestates.pre012.member.entity.Member;
 import com.codestates.pre012.posts.entity.Posts;
 import com.codestates.pre012.posts.repository.PostsRepository;
-import com.codestates.pre012.reply.dto.ReplyDto;
 import com.codestates.pre012.reply.entity.Reply;
-import com.codestates.pre012.reply.repository.ReplyRespository;
+import com.codestates.pre012.reply.repository.ReplyRepository;
 import org.springframework.stereotype.Service;
-
-import java.util.Objects;
 
 @Service
 public class ReplyService {
-    private final ReplyRespository replyRespository;
+    private final ReplyRepository replyRepository;
 
     private final PostsRepository postsRepository;
 
-    public ReplyService(ReplyRespository replyRespository, PostsRepository postsRepository) {
-        this.replyRespository = replyRespository;
+    public ReplyService(ReplyRepository replyRepository, PostsRepository postsRepository) {
+        this.replyRepository = replyRepository;
         this.postsRepository = postsRepository;
     }
 
@@ -36,8 +33,12 @@ public class ReplyService {
         reply.setMember(member);
 
         // 댓글 객체값을 DB 저장
-        Reply createReply = replyRespository.save(reply);
+        Reply createReply = replyRepository.save(reply);
 
         return createReply;
+    }
+
+    public Reply viewReply(Long replyId) {
+        return replyRepository.findById(replyId).orElse(null);
     }
 }

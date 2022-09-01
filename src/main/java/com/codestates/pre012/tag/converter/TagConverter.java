@@ -1,6 +1,6 @@
 package com.codestates.pre012.tag.converter;
 
-import com.codestates.pre012.tag.Tag;
+import com.codestates.pre012.tag.entity.Tag;
 import org.springframework.util.StringUtils;
 
 import javax.persistence.AttributeConverter;

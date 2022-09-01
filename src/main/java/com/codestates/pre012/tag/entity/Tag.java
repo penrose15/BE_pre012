@@ -1,9 +1,7 @@
-package com.codestates.pre012.tag;
+package com.codestates.pre012.tag.entity;
 
-import com.codestates.pre012.member.entity.Member;
 import com.codestates.pre012.tag.converter.TagConverter;
 import lombok.*;
-import org.springframework.stereotype.Component;
 
 import javax.persistence.*;
 import java.util.List;

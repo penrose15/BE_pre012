@@ -9,15 +9,19 @@ import com.codestates.pre012.posts.dto.PostsDto;
 import com.codestates.pre012.posts.entity.Posts;
 import com.codestates.pre012.posts.mapper.PostsMapper;
 import com.codestates.pre012.posts.service.PostsService;
+import com.codestates.pre012.reply.entity.Reply;
+import com.codestates.pre012.reply.repository.ReplyRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.util.MultiValueMap;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
+import java.util.Arrays;
 import java.util.List;
 
 @RestController
@@ -27,10 +31,12 @@ public class PostsController {
 
     private final PostsService postsService;
     private final PostsMapper mapper;
+    private final ReplyRepository replyRepository;
 
-    public PostsController(PostsService postsService, PostsMapper mapper) {
+    public PostsController(PostsService postsService, PostsMapper mapper, ReplyRepository replyRepository) {
         this.postsService = postsService;
         this.mapper = mapper;
+        this.replyRepository = replyRepository;
     }
 
 
@@ -40,7 +46,7 @@ public class PostsController {
 
         Member member = principal.getMember();
         Posts findPosts = mapper.postsPostDtoToPosts(posts);
-        Posts response = postsService.savedPosts(findPosts,member);
+        Posts response = postsService.savedPosts(findPosts, member);
 
         return new ResponseEntity<>(new SingleResponseDto<>(mapper.postsToPostsDtoResponse(response)), HttpStatus.CREATED);
     }
@@ -59,12 +65,22 @@ public class PostsController {
     @GetMapping("/{posts-id}")
     public ResponseEntity viewPosts(@PathVariable("posts-id") @Positive Long postId) {
         // 게시글 내용
-        Posts response = postsService.lookPosts(postId);
+        Posts responsePost = postsService.lookPosts(postId);
+        long postMemberId = responsePost.getMember().getId();
 
-        // 게시글에 달린 댓글
+        // 게시글에 달린 댓글 전부
+        List<Reply> replyList = replyRepository.findByPosts_PostsId(postId);
+        for (Reply reply : replyList) {
+            responsePost.addReplies(reply);
+        }
 
+        for (Reply reply : replyList) {
+            System.out.println(reply.getContent());
+        }
 
-        return new ResponseEntity<>(new SingleResponseDto<>(mapper.postsToPostsDtoResponse(response)), HttpStatus.OK);
+        responsePost.setReplies(replyList);
+
+        return new ResponseEntity<>(new SingleResponseDto<>(mapper.postsToPostsDtoResponse(responsePost)), HttpStatus.OK);
     }
 
     @GetMapping

@@ -24,7 +24,6 @@ public class ReplyController {
         this.mapper = mapper;
     }
 
-
     // 댓글 생성
     @PostMapping("/reply/{postId}")
     public ResponseEntity createReply(@PathVariable("postId") Long postId,
