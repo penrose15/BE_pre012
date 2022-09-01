@@ -47,6 +47,7 @@ public class PostsService {
 
     public Posts lookPosts(long postId) {
         Posts posts = postsRepository.findById(postId).orElse(null);
+
         int count = postsRepository.updateView(postId);
         posts.setView(count);
 

@@ -1,5 +1,6 @@
 package com.codestates.pre012.reply.dto;
 
+import com.codestates.pre012.reply.Reply;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -23,8 +24,12 @@ public class ReplyDto {
     @Getter
     @Builder
     public static class Response {
-
+        private long replyId;
+        private long postsId;
         private String content;
+        private String username;
 
     }
+
+
 }

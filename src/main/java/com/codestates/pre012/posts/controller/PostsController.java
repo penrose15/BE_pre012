@@ -62,16 +62,14 @@ public class PostsController {
 
     @GetMapping("/{posts-id}")
     public ResponseEntity viewPosts(@PathVariable("posts-id") @Positive Long postId,
-                                    @RequestParam int replyPage,
-                                    @RequestParam int replySize) {
+                                    @RequestParam(value = "page") int replyPage,
+                                    @RequestParam(value = "size") int replySize) {
 
         Posts response = postsService.lookPosts(postId);
 
-        Page<Reply> replies = replyService.getReplies(replyPage, replySize, postId);
-        List<Reply> replyList = replies.getContent();
-        List<Object> list = List.of(response,replyList);
 
-        return new ResponseEntity<>(new MultiResponseDto<>(list, replies), HttpStatus.OK);
+        System.out.println("# post 시작 =======================");
+        return new ResponseEntity<>(mapper.postsToPostsDtoResponse(response),HttpStatus.OK);
     }
 
     @GetMapping
@@ -83,7 +81,7 @@ public class PostsController {
         List<Posts> posts = pagePosts.getContent();
 
         return new ResponseEntity<>(
-                new MultiResponseDto<>(mapper.postsToPostsDtoResponses(posts), pagePosts),
+                new MultiResponseDto<>(mapper.postsToPostsDtoPostPageResponses(posts), pagePosts),
                 HttpStatus.OK);
     }
 

@@ -37,12 +37,14 @@ public class ReplyController {
         return new ResponseEntity<>(new SingleResponseDto<>(mapper.ReplyToReplyResponse(reply)),HttpStatus.CREATED);
     }
 
-    @PatchMapping("/reply/{postId}/{replyId}")
-    public ResponseEntity updateEntity(@PathVariable("PostId") long postId,
+    @PatchMapping("/reply/{postsId}/{replyId}")
+    public ResponseEntity updateEntity(@PathVariable("postsId") long postsId,
+                                       @PathVariable("replyId") long replyId,
                                        @AuthenticationPrincipal PrincipalDetails principal,
                                        @RequestBody ReplyDto.Patch replyPatch) {
         Reply reply = mapper.ReplyPatchDtoToReply(replyPatch);
-        Reply response = replyService.updateReply(postId, principal.getMember(), reply);
+        reply.setReplyId(replyId);
+        Reply response = replyService.updateReply(postsId, principal.getMember(), reply);
 
         return new ResponseEntity<>(new SingleResponseDto<>(mapper.ReplyToReplyResponse(response)), HttpStatus.OK);
     }

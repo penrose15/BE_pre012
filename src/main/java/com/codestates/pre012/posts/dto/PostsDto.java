@@ -1,9 +1,14 @@
 package com.codestates.pre012.posts.dto;
 
+import com.codestates.pre012.reply.Reply;
+import com.codestates.pre012.reply.dto.ReplyDto;
 import lombok.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Positive;
+import java.util.List;
 
 public class PostsDto {
 
@@ -46,9 +51,25 @@ public class PostsDto {
         private String title;
         private String content;
 
-        public Response(String title, String content) {
+        private List<ReplyDto.Response> replies;
+
+        public Response(String title, String content, List<ReplyDto.Response> replies) {
             this.title = title;
             this.content = content;
+            this.replies = replies;
         }
     }
+
+    @Getter
+    @Builder
+    @AllArgsConstructor
+    public static class PostPageResponse {
+
+        private long postsId;
+        private String title;
+        private String content;
+
+    }
+
+
 }

@@ -10,6 +10,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -20,6 +21,7 @@ public class ReplyService {
     private final ReplyRepository replyRepository;
     private final PostsRepository postsRepository;
 
+    @Transactional
     public Reply createReply(long postsId,Member member, Reply reply) {
 
         reply.setPosts(findPost(postsId));
@@ -28,16 +30,23 @@ public class ReplyService {
         return  replyRepository.save(reply);
     }
 
-    public Reply updateReply(long postId, Member member,Reply reply) {
+    public Reply updateReply(long postsId, Member member,Reply reply) {
         Reply findReply = findReplies(reply.getReplyId());
-        verifiedMember(member, reply);
+        Member member1 = findReply.getMember();
+        System.out.println(member1.getUsername());
+
+        verifiedMember(member, findReply);
+
+        findReply.setPosts(findPost(postsId));
+
         Optional.ofNullable(reply.getContent()).ifPresent(findReply::setContent);
-        findReply.setPosts(findPost(postId));
+
 
         return replyRepository.save(findReply);
     }
     //최신순으로 정렬
     public Page<Reply> getReplies(int page, int size, long postId) {
+        findPost(postId).getReplies();
         Page<Reply> replies = replyRepository.findAll(PageRequest.of(page, size, Sort.Direction.DESC,"replyId"));
 
         return replies;
@@ -52,8 +61,8 @@ public class ReplyService {
         replyRepository.deleteById(replyId);
     }
 
-    private Posts findPost(long postId) {
-        Optional<Posts> posts = postsRepository.findById(postId);
+    private Posts findPost(long postsId) {
+        Optional<Posts> posts = postsRepository.findById(postsId);
         Posts findPosts = posts.orElseThrow(() -> new BusinessLogicException(ExceptionCode.POSTS_NOT_FOUND));
         return findPosts;
     }
@@ -61,11 +70,13 @@ public class ReplyService {
     private Reply findReplies(long replyId) {
         Optional<Reply> reply = replyRepository.findById(replyId);
         Reply findReply = reply.orElseThrow(() -> new BusinessLogicException(ExceptionCode.REPLY_NOT_FOUND));
+        System.out.println(findReply.getContent());
 
         return findReply;
     }
 
     private void verifiedMember(Member member, Reply reply) {
-        if(!reply.getMember().equals(member)) throw new BusinessLogicException(ExceptionCode.WRONG_MEMBERS_REPLY);
+        if(!reply.getMember().getUsername().equals(member.getUsername()))
+            throw new BusinessLogicException(ExceptionCode.WRONG_MEMBERS_REPLY);
     }
 }

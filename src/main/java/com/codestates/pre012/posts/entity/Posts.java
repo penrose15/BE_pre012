@@ -5,9 +5,12 @@ import com.codestates.pre012.baseEntity.BaseEntity;
 import com.codestates.pre012.member.entity.Member;
 import com.codestates.pre012.reply.Reply;
 import com.codestates.pre012.tag.Tag_Posts;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.BatchSize;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -47,10 +50,12 @@ public class Posts extends BaseEntity {
         }
     }
 
+    @BatchSize(size = 100)
     @OneToMany(mappedBy = "posts",
             fetch = FetchType.EAGER,
-            cascade = {CascadeType.REMOVE, CascadeType.PERSIST},
+            cascade = CascadeType.REMOVE,
             orphanRemoval = true) //posts삭제시 reply도 같이 삭제
+    @OrderBy("posts_id desc")
     private List<Reply> replies = new ArrayList<>();
 
     public void addReplies(Reply reply) {
