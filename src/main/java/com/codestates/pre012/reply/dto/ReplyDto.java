@@ -1,6 +1,6 @@
 package com.codestates.pre012.reply.dto;
 
-import com.codestates.pre012.reply.Reply;
+
 import lombok.Builder;
 import lombok.Getter;
 

@@ -3,8 +3,7 @@ package com.codestates.pre012.posts.entity;
 
 import com.codestates.pre012.baseEntity.BaseEntity;
 import com.codestates.pre012.member.entity.Member;
-import com.codestates.pre012.reply.Reply;
-import com.codestates.pre012.tag.Tag_Posts;
+import com.codestates.pre012.reply.entity.Reply;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -37,17 +36,6 @@ public class Posts extends BaseEntity {
     private Member member;
 
 
-    @OneToMany(mappedBy = "posts",
-            cascade = CascadeType.ALL,
-            orphanRemoval = true) //posts에 의해 tag의 생명주기가 달려있다고 생각이 들어서 cascade+orphanRemove 처리를 했습니다.
-    private List<Tag_Posts> tag_postsList = new ArrayList<>(); //post에 tag조회를 위해 양방향 설정
-
-    public void addTag_Posts(Tag_Posts tag_posts) { //양방향 관계 설정을 위해 참조 추가
-        this.tag_postsList.add(tag_posts);
-        if(tag_posts.getPosts() != this) { //순환참조 방지
-           tag_posts.setPosts(this);
-        }
-    }
 
     //page로 댓글을 받지 못해서 일단 임시방편으로 BatchSize로 댓글 100개만 불러올 수 있도록 설정
     //cascadetype.PERSIST : post저장시 댓글도 같이 저장, REMOVE : post 삭제시 댓글다 같이 삭제

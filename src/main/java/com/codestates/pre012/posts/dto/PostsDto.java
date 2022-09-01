@@ -53,8 +53,6 @@ public class PostsDto {
         private String title;
         private String content;
         private int view;
-        private List<Reply> replyList;
-
 
         private List<ReplyDto.Response> replies;
 
