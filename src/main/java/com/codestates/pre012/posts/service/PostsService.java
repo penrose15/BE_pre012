@@ -25,11 +25,6 @@ public class PostsService {
 
     private final PostsRepository postsRepository;
 
-    private final ReplyRepository replyRepository;
-    private final TagService tagService;
-    private final Tag_PostsService tag_postsService;
-    private final Tag_PostsRepository tag_postsRepository;
-
 
     public Posts savedPosts(Posts postsPost , Member member) {
 
