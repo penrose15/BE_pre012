@@ -30,17 +30,11 @@ import java.util.List;
 public class PostsController {
 
     private final PostsService postsService;
-    private final ReplyService replyService; //post상세페이지에 같이 댓글 보여야 하므로 추가
     private final PostsMapper mapper;
 
-    private final ReplyMapper replyMapper;
-//    private final TagMapper tagMapper;
-
-    public PostsController(PostsService postsService, ReplyService replyService, PostsMapper mapper, ReplyMapper replyMapper) {
+    public PostsController(PostsService postsService, PostsMapper mapper) {
         this.postsService = postsService;
-        this.replyService = replyService;
         this.mapper = mapper;
-        this.replyMapper = replyMapper;
     }
 
     @PostMapping("/create")
