@@ -23,7 +23,7 @@ public class Reply extends BaseEntity {
     private String content;
 
     @ManyToOne
-    @JoinColumn(name = "postsId")
+    @JoinColumn(name = " postsId")
     private Posts posts;
 
     @ManyToOne(fetch = FetchType.EAGER)
