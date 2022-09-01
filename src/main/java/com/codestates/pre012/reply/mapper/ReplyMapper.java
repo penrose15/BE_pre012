@@ -1,6 +1,7 @@
-package com.codestates.pre012.reply;
+package com.codestates.pre012.reply.mapper;
 
 
+import com.codestates.pre012.reply.entity.Reply;
 import com.codestates.pre012.reply.dto.ReplyDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;

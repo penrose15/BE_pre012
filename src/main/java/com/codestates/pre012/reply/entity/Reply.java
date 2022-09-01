@@ -1,4 +1,4 @@
-package com.codestates.pre012.reply;
+package com.codestates.pre012.reply.entity;
 
 import com.codestates.pre012.baseEntity.BaseEntity;
 import com.codestates.pre012.member.entity.Member;

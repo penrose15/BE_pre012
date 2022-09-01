@@ -3,7 +3,7 @@ package com.codestates.pre012.member.entity;
 
 import com.codestates.pre012.baseEntity.BaseEntity;
 import com.codestates.pre012.posts.entity.Posts;
-import com.codestates.pre012.reply.Reply;
+import com.codestates.pre012.reply.entity.Reply;
 import lombok.*;
 
 import javax.persistence.*;
@@ -51,8 +51,7 @@ public class Member extends BaseEntity {
     }
 
 
-
-    @OneToMany(mappedBy = "member")
+    @OneToMany(mappedBy = "member", fetch = FetchType.EAGER)
     private List<Posts> posts;
 
     @OneToMany(mappedBy = "posts",fetch = FetchType.EAGER)

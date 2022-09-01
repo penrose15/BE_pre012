@@ -1,13 +1,13 @@
 package com.codestates.pre012.posts.dto;
 
-import com.codestates.pre012.reply.Reply;
+import com.codestates.pre012.reply.entity.Reply;
 import com.codestates.pre012.reply.dto.ReplyDto;
+
 import lombok.*;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Positive;
+
 import java.util.List;
 
 public class PostsDto {
@@ -52,6 +52,9 @@ public class PostsDto {
         private long postsId;
         private String title;
         private String content;
+        private int view;
+        private List<Reply> replyList;
+
 
         private List<ReplyDto.Response> replies;
 
@@ -60,6 +63,7 @@ public class PostsDto {
             this.content = content;
             this.replies = replies;
         }
+
     }
 
     //전체페이지에 댓글을 내보낼 필요는 없으므로 전체 페이지 responseDTO 추가

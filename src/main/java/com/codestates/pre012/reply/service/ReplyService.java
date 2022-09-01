@@ -1,16 +1,17 @@
-package com.codestates.pre012.reply;
+package com.codestates.pre012.reply.service;
 
 import com.codestates.pre012.exception.BusinessLogicException;
 import com.codestates.pre012.exception.ExceptionCode;
 import com.codestates.pre012.member.entity.Member;
 import com.codestates.pre012.posts.entity.Posts;
 import com.codestates.pre012.posts.repository.PostsRepository;
+import com.codestates.pre012.reply.entity.Reply;
+import com.codestates.pre012.reply.repository.ReplyRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -23,7 +24,7 @@ public class ReplyService {
 
 
     //reply에 member, post 설정
-    public Reply createReply(long postsId,Member member, Reply reply) {
+    public Reply createReply(long postsId, Member member, Reply reply) {
 
         reply.setPosts(findPost(postsId));
         reply.setMember(member);

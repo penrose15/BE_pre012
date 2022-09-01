@@ -1,11 +1,10 @@
 package com.codestates.pre012.reply.controller;
 
-
 import com.codestates.pre012.config.oauth.PrincipalDetails;
 import com.codestates.pre012.dto.SingleResponseDto;
-import com.codestates.pre012.reply.Reply;
-import com.codestates.pre012.reply.ReplyMapper;
-import com.codestates.pre012.reply.ReplyService;
+import com.codestates.pre012.reply.entity.Reply;
+import com.codestates.pre012.reply.mapper.ReplyMapper;
+import com.codestates.pre012.reply.service.ReplyService;
 import com.codestates.pre012.reply.dto.ReplyDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -25,15 +24,15 @@ public class ReplyController {
     private final ReplyMapper mapper;
 
     @PostMapping("/reply/{postsId}")
-    public ResponseEntity createReply(@PathVariable("postsId") long postsId ,
+    public ResponseEntity createReply(@PathVariable("postsId") long postsId,
                                       @AuthenticationPrincipal PrincipalDetails principal,
                                       @RequestBody ReplyDto.Post replyPost) {
 
         Reply reply = mapper.ReplyPostDtoToReply(replyPost);
 
-        replyService.createReply(postsId,principal.getMember(), reply);
+        replyService.createReply(postsId, principal.getMember(), reply);
 
-        return new ResponseEntity<>(new SingleResponseDto<>(mapper.ReplyToReplyResponse(reply)),HttpStatus.CREATED);
+        return new ResponseEntity<>(new SingleResponseDto<>(mapper.ReplyToReplyResponse(reply)), HttpStatus.CREATED);
     }
 
     @PatchMapping("/reply/{postsId}/{replyId}")
@@ -52,11 +51,10 @@ public class ReplyController {
     public ResponseEntity deleteEntity(@PathVariable("postId") long postId,
                                        @AuthenticationPrincipal PrincipalDetails principal,
                                        @PathVariable("replyId") long replyId) {
-        replyService.deleteReply(postId,principal.getMember(),replyId);
+        replyService.deleteReply(postId, principal.getMember(), replyId);
 
-        return new ResponseEntity<>("댓글이 삭제되었습니다.",HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>("댓글이 삭제되었습니다.", HttpStatus.NO_CONTENT);
     }
-
 
 
 }
