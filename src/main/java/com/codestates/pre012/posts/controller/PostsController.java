@@ -4,6 +4,7 @@ package com.codestates.pre012.posts.controller;
 import com.codestates.pre012.config.oauth.PrincipalDetails;
 import com.codestates.pre012.dto.MultiResponseDto;
 import com.codestates.pre012.dto.SingleResponseDto;
+import com.codestates.pre012.member.entity.Member;
 import com.codestates.pre012.posts.dto.PostsDto;
 import com.codestates.pre012.posts.entity.Posts;
 import com.codestates.pre012.posts.mapper.PostsMapper;
@@ -36,22 +37,18 @@ public class PostsController {
     public ResponseEntity createPosts(@Valid @RequestBody PostsDto.Post posts,
                                       @AuthenticationPrincipal PrincipalDetails principal) {
 
+        Member member = principal.getMember();
         Posts findPosts = mapper.postsPostDtoToPosts(posts);
-
-        Posts response = postsService.savedPosts(findPosts, principal.getMember());
+        Posts response = postsService.savedPosts(findPosts,member);
 
         return new ResponseEntity<>(new SingleResponseDto<>(mapper.postsToPostsDtoResponse(response)), HttpStatus.CREATED);
     }
 
     @PatchMapping("/patch")
-    public ResponseEntity patchPosts(@Valid @RequestBody PostsDto.Patch posts,
-                                     @AuthenticationPrincipal PrincipalDetails principal) {
-
+    public ResponseEntity patchPosts(@Valid @RequestBody PostsDto.Patch posts, @AuthenticationPrincipal PrincipalDetails principal) {
 
         posts.setPostsId(posts.getPostsId());
-        Posts response = postsService.updatePosts(
-                mapper.postsPatchDtoToPosts(posts)
-                , principal.getMember());
+        Posts response = postsService.updatePosts(mapper.postsPatchDtoToPosts(posts) ,principal.getMember());
 
         return new ResponseEntity<>(new SingleResponseDto<>(mapper.postsToPostsDtoResponse(response)), HttpStatus.OK);
     }
@@ -77,11 +74,10 @@ public class PostsController {
     }
 
     @DeleteMapping("/{posts-Id}")
-    public ResponseEntity deletePosts(@PathVariable("posts-Id") @Positive Long postId,
-                                      @AuthenticationPrincipal PrincipalDetails principal) {
-
+    public ResponseEntity deletePosts(@PathVariable("posts-Id") @Positive Long postId, @AuthenticationPrincipal PrincipalDetails principal) {
 
         postsService.deletePosts(postId, principal.getMember());
+
         return new ResponseEntity<>("삭제 완료", HttpStatus.NO_CONTENT);
     }
 }
