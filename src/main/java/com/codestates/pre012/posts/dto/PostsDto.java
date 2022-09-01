@@ -42,6 +42,8 @@ public class PostsDto {
 
     }
 
+
+    //순환참조를 막기 위해 replyResponseDTO 추가(이유는 모르겠음....) https://dev-coco.tistory.com/132
     @Getter
     @Builder
     @AllArgsConstructor
@@ -60,6 +62,7 @@ public class PostsDto {
         }
     }
 
+    //전체페이지에 댓글을 내보낼 필요는 없으므로 전체 페이지 responseDTO 추가
     @Getter
     @Builder
     @AllArgsConstructor

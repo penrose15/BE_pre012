@@ -21,7 +21,8 @@ public class ReplyService {
     private final ReplyRepository replyRepository;
     private final PostsRepository postsRepository;
 
-    @Transactional
+
+    //reply에 member, post 설정
     public Reply createReply(long postsId,Member member, Reply reply) {
 
         reply.setPosts(findPost(postsId));
@@ -30,10 +31,9 @@ public class ReplyService {
         return  replyRepository.save(reply);
     }
 
+    //1. reply 찾기, 2. reply 작성자와 수정하려는 member일치하는지 확인 3. reply 수정
     public Reply updateReply(long postsId, Member member,Reply reply) {
         Reply findReply = findReplies(reply.getReplyId());
-        Member member1 = findReply.getMember();
-        System.out.println(member1.getUsername());
 
         verifiedMember(member, findReply);
 
@@ -44,6 +44,7 @@ public class ReplyService {
 
         return replyRepository.save(findReply);
     }
+
     //최신순으로 정렬
     public Page<Reply> getReplies(int page, int size, long postId) {
         findPost(postId).getReplies();
@@ -52,6 +53,7 @@ public class ReplyService {
         return replies;
     }
 
+    //update와 동일하게 reply작성자와 member가 일치하는지 확인 후 삭제
     public void deleteReply(long postId,Member member,long replyId) {
         Reply reply = findReplies(replyId);
 

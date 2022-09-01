@@ -49,6 +49,9 @@ public class Posts extends BaseEntity {
         }
     }
 
+    //page로 댓글을 받지 못해서 일단 임시방편으로 BatchSize로 댓글 100개만 불러올 수 있도록 설정
+    //cascadetype.PERSIST : post저장시 댓글도 같이 저장, REMOVE : post 삭제시 댓글다 같이 삭제
+    //orphanremoval 고아객체 삭제 https://dev-elop.tistory.com/entry/JPA-orphanRemoval-%EC%9A%A9%EB%8F%84
     @BatchSize(size = 100)
     @OneToMany(mappedBy = "posts",
             fetch = FetchType.EAGER,
@@ -57,12 +60,7 @@ public class Posts extends BaseEntity {
     @OrderBy("posts_id desc")
     private List<Reply> replies = new ArrayList<>();
 
-    public void addReplies(Reply reply) {
-        this.replies.add(reply);
-        if(reply.getPosts() != this) {
-            reply.setPosts(this);
-        }
-    }
+    //순환 참조방지에 별 도움이 안되는 것 같아 addReplies() 삭제
 
     @Column(name = "view")
     private int view;
@@ -88,5 +86,5 @@ public class Posts extends BaseEntity {
         this.title = title;
         this.content = content;
     }
-    //todo : 특정 태그 선택시 select p from posts p join p.tag t로 tag관련된 posts 조회 가능해야 함
+
 }

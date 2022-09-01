@@ -31,6 +31,7 @@ public class PostsService {
         return postsRepository.save(postsPost);
     }
 
+    //member 식별 이후 수정 가능하도록 멤버변수에 member 추가
     public Posts updatePosts(Posts patchPost ,Member member) {
         Posts findPosts = existPosts(patchPost.getPostsId());
         if(!findPosts.getMember().equals(member)) throw new RuntimeException("자신의 글만 수정 가능합니다.");
@@ -56,7 +57,7 @@ public class PostsService {
     }
 
 
-
+    //작성자와 member가 동일한지 확인 후 삭제
     public void deletePosts(long postId, Member member) {
 
         Posts findPosts = existPosts(postId);

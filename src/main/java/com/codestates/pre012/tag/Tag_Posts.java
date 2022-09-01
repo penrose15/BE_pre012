@@ -21,21 +21,11 @@ public class Tag_Posts {
     @JoinColumn(name = "tagId")
     private Tag tag;
 
-    public void setTag(Tag tag) { //양방향 관계 설정을 위해 추가
-        this.tag = tag;
-        if(!tag.getTag_postsList().contains(this)) { //순환 참조 방지
-            tag.getTag_postsList().add(this);
-        }
-    }
+    //setTag 삭제
 
     @ManyToOne
     @JoinColumn(name = "postId")
     private Posts posts;
 
-    public void setPosts(Posts posts) { //양방향 관계설정을 위해 추가
-        this.posts = posts;
-        if(!posts.getTag_postsList().contains(this)) { //순환 참조 방지
-            posts.getTag_postsList().add(this);
-        }
-    }
+    //setPosts()삭제
 }

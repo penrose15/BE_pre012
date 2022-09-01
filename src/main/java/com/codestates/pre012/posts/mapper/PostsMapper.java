@@ -20,6 +20,8 @@ public interface PostsMapper {
 
     Posts postsPostDtoToPosts(PostsDto.Post requestBody);
     Posts postsPatchDtoToPosts(PostsDto.Patch requestBody);
+
+    //mapper 수동 구현
     default PostsDto.Response postsToPostsDtoResponse(Posts posts) { //reply를 posts에 넣기 위해 추가(reply -> replyResponseDto)
         List<ReplyDto.Response> replies= posts.getReplies().stream()
                 .map(reply -> {
