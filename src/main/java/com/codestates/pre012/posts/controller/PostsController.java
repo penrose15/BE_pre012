@@ -46,9 +46,10 @@ public class PostsController {
                                      @Valid @RequestBody PostsDto.Post posts,
                                      @AuthenticationPrincipal PrincipalDetails principal) {
 
-        Posts requestPosts = mapper.postsPostDtoToPosts(posts);
 
+        Posts requestPosts = mapper.postsPostDtoToPosts(posts);
         Posts response = postsService.updatePosts(postsId ,requestPosts ,principal.getMember());
+
 
         return new ResponseEntity<>(new SingleResponseDto<>(mapper.postsToPostsResponse(response)), HttpStatus.OK);
     }
