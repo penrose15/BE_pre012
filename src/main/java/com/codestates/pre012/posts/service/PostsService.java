@@ -8,6 +8,7 @@ import com.codestates.pre012.posts.repository.PostsRepository;
 
 import com.codestates.pre012.reply.repository.ReplyRepository;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -18,16 +19,12 @@ import java.util.Optional;
 
 @Service
 @Transactional
+@RequiredArgsConstructor
 public class PostsService {
 
     private final PostsRepository postsRepository;
 
     private final ReplyRepository replyRepository;
-
-    public PostsService(PostsRepository postsRepository, ReplyRepository replyRepository) {
-        this.postsRepository = postsRepository;
-        this.replyRepository = replyRepository;
-    }
 
 
     public Posts savedPosts(Posts postsPost, Member member) {
@@ -36,25 +33,31 @@ public class PostsService {
         return postsRepository.save(postsPost);
     }
 
-    //member 식별 이후 수정 가능하도록 멤버변수에 member 추가
-    public Posts updatePosts(Posts patchPost ,Member member) {
-        Posts findPosts = existPosts(patchPost.getPostsId());
-        if(!findPosts.getMember().equals(member)) throw new RuntimeException("자신의 글만 수정 가능합니다.");
+    public Posts updatePosts(Long postsId,Posts posts ,Member member) {
 
-        Optional.ofNullable(patchPost.getTitle())
+
+        Posts findPosts = existPosts(postsId);
+
+        if(!findPosts.getMember().getPassword().equals(member.getPassword())) throw new RuntimeException("자신의 글만 수정 가능합니다.");
+
+
+        Optional.ofNullable(posts.getTitle())
                 .ifPresent(findPosts::setTitle);
-        Optional.ofNullable(patchPost.getContent())
+        Optional.ofNullable(posts.getContent())
                 .ifPresent(findPosts::setContent);
 
         return postsRepository.save(findPosts);
     }
 
     public Posts lookPosts(long postId) {
-        Posts posts = postsRepository.findById(postId).orElse(null);
+
+        Posts posts = existPosts(postId);
+        String username = posts.getMember().getUsername();
+        System.out.println("==============================================" + username);
 
         int count = postsRepository.updateView(postId);
 
-        return existPosts(postId);
+        return posts;
     }
 
     public Page<Posts> findAllPosts(int page, int size) {
@@ -62,15 +65,15 @@ public class PostsService {
     }
 
 
-    //작성자와 member가 동일한지 확인 후 삭제
     public void deletePosts(long postId, Member member) {
 
         Posts findPosts = existPosts(postId);
-        if(findPosts.getMember().equals(member)) {
+        if(findPosts.getMember().getPassword().equals(member.getPassword())) {
             postsRepository.delete(findPosts);
         }
         else throw new RuntimeException("자신의 게시글만 삭제 가능합니다.");
     }
+
 
     private Posts existPosts(long postsId) {
 
@@ -79,4 +82,6 @@ public class PostsService {
         return existPosts.orElseThrow(() ->
                 new BusinessLogicException(ExceptionCode.POSTS_NOT_FOUND));
     }
+
+
 }

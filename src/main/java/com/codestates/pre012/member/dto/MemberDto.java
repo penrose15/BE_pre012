@@ -11,18 +11,6 @@ import javax.validation.constraints.Pattern;
 public class MemberDto {
 
 
-    @Getter
-    @AllArgsConstructor
-    @NoArgsConstructor
-    public static class Login {
-
-        @NotBlank(message = "공백이 될 수 없습니다.")
-        private String username;
-
-        @NotBlank(message = "공백이 될 수 없습니다.")
-        private String password;
-    }
-
 
     @Getter
     @AllArgsConstructor
@@ -56,7 +44,6 @@ public class MemberDto {
         @Email(message = "유효한 이메일 형식이어야 합니다.", regexp = "^[\\w!#$%&amp;'*+/=?`{|}~^-]+(?:\\.[\\w!#$%&amp;'*+/=?`{|}~^-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,6}$")
         @NotBlank(message = "이메일을 입력해주세요")
         private String email;
-
     }
 
     @Getter
@@ -68,10 +55,6 @@ public class MemberDto {
 
         @NotBlank(message = "공백이 될 수 없습니다.")
         private String username;
-
-        @Email
-        @NotBlank
-        private String email;
 
     }
 }

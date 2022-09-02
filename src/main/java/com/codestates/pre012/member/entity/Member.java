@@ -51,11 +51,12 @@ public class Member extends BaseEntity {
     }
 
 
-    @OneToMany(mappedBy = "member", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "member")
     private List<Posts> posts;
 
-    @OneToMany(mappedBy = "posts",fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "posts")
     private List<Reply> reply;
+
 
     public List<String> getRoleList() {
         if(this.roles.length() > 0) {

@@ -1,6 +1,6 @@
 package com.codestates.pre012.posts.dto;
 
-import com.codestates.pre012.reply.entity.Reply;
+import com.codestates.pre012.member.dto.MemberDto;
 import com.codestates.pre012.reply.dto.ReplyDto;
 
 import lombok.*;
@@ -22,59 +22,30 @@ public class PostsDto {
 
         @NotBlank(message = "공백이 될 수 없습니다.")
         private String content;
-
     }
 
+
     @Getter
-    @Setter
+    @Builder
     @AllArgsConstructor
-    @NoArgsConstructor
-    public static class Patch {
+    public static class PostsResponse {
 
-        @Positive
         private long postsId;
-
-        @NotBlank(message = "공백이 될 수 없습니다.")
         private String title;
-
-        @NotBlank(message = "공백이 될 수 없습니다.")
         private String content;
 
     }
 
-
-    //순환참조를 막기 위해 replyResponseDTO 추가(이유는 모르겠음....) https://dev-coco.tistory.com/132
     @Getter
     @Builder
     @AllArgsConstructor
-    public static class Response {
+    public static class SearchResponse {
 
         private long postsId;
         private String title;
         private String content;
         private int view;
-
+        private MemberDto.Response member;
         private List<ReplyDto.Response> replies;
-
-        public Response(String title, String content, List<ReplyDto.Response> replies) {
-            this.title = title;
-            this.content = content;
-            this.replies = replies;
-        }
-
     }
-
-    //전체페이지에 댓글을 내보낼 필요는 없으므로 전체 페이지 responseDTO 추가
-    @Getter
-    @Builder
-    @AllArgsConstructor
-    public static class PostPageResponse {
-
-        private long postsId;
-        private String title;
-        private String content;
-
-    }
-
-
 }
