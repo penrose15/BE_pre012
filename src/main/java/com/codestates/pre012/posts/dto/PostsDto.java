@@ -1,9 +1,14 @@
 package com.codestates.pre012.posts.dto;
 
+import com.codestates.pre012.member.dto.MemberDto;
+import com.codestates.pre012.reply.dto.ReplyDto;
+
 import lombok.*;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Positive;
+
+import java.util.List;
 
 public class PostsDto {
 
@@ -12,27 +17,21 @@ public class PostsDto {
     @NoArgsConstructor
     public static class Post {
 
-        @NotBlank
+        @NotBlank(message = "공백이 될 수 없습니다.")
         private String title;
 
-        @NotBlank
+        @NotBlank(message = "공백이 될 수 없습니다.")
         private String content;
-
     }
 
+
     @Getter
-    @Setter
+    @Builder
     @AllArgsConstructor
-    @NoArgsConstructor
-    public static class Patch {
+    public static class PostsResponse {
 
-        @Positive
         private long postsId;
-
-        @NotBlank
         private String title;
-
-        @NotBlank
         private String content;
 
     }
@@ -40,18 +39,13 @@ public class PostsDto {
     @Getter
     @Builder
     @AllArgsConstructor
-    public static class Response {
+    public static class SearchResponse {
 
-        @Positive
         private long postsId;
-        @NotBlank
         private String title;
-        @NotBlank
         private String content;
-
-        public Response(String title, String content) {
-            this.title = title;
-            this.content = content;
-        }
+        private int view;
+        private MemberDto.Response member;
+        private List<ReplyDto.Response> replies;
     }
 }

@@ -25,11 +25,11 @@ include::{snippets}/post-JoinMember/http-request.adoc[]
 .request-fields
 include::{snippets}/post-JoinMember/request-fields.adoc[]
 
-.http-response
-include::{snippets}/post-JoinMember/http-response.adoc[]
+.http-postsResponse
+include::{snippets}/post-JoinMember/http-postsResponse.adoc[]
 
-.response-fields
-include::{snippets}/post-JoinMember/response-fields.adoc[]
+.postsResponse-fields
+include::{snippets}/post-JoinMember/postsResponse-fields.adoc[]
 
 
 === 로그인
@@ -40,11 +40,11 @@ include::{snippets}/post-loginMember/http-request.adoc[]
 .request-fields
 include::{snippets}/post-loginMember/request-fields.adoc[]
 
-.http-response
-include::{snippets}/post-loginMember/http-response.adoc[]
+.http-postsResponse
+include::{snippets}/post-loginMember/http-postsResponse.adoc[]
 
-.response-fields
-include::{snippets}/post-loginMember/response-fields.adoc[]
+.postsResponse-fields
+include::{snippets}/post-loginMember/postsResponse-fields.adoc[]
 
 '''
 == PostsController
@@ -56,11 +56,11 @@ include::{snippets}/post-posts/http-request.adoc[]
 .request-fields
 include::{snippets}/post-posts/request-fields.adoc[]
 
-.http-response
-include::{snippets}/post-posts/http-response.adoc[]
+.http-postsResponse
+include::{snippets}/post-posts/http-postsResponse.adoc[]
 
-.response-fields
-include::{snippets}/post-posts/response-fields.adoc[]
+.postsResponse-fields
+include::{snippets}/post-posts/postsResponse-fields.adoc[]
 
 '''
 
@@ -73,13 +73,13 @@ include::{snippets}/patch-posts/http-request.adoc[]
 include::{snippets}/patch-posts/request-fields.adoc[]
 
 .path-parameters
-include::{snippets}/patch-posts/path-parameters.adoc[]
+//include::{snippets}/patch-posts/path-parameters.adoc[]
 
-.http-response
-include::{snippets}/patch-posts/http-response.adoc[]
+.http-postsResponse
+include::{snippets}/patch-posts/http-postsResponse.adoc[]
 
-.response-fields
-include::{snippets}/patch-posts/response-fields.adoc[]
+.postsResponse-fields
+include::{snippets}/patch-posts/postsResponse-fields.adoc[]
 '''
 === 특정 포스트 글 조회
 
@@ -89,11 +89,11 @@ include::{snippets}/get-posts/http-request.adoc[]
 .path-parameters
 include::{snippets}/get-posts/path-parameters.adoc[]
 
-.http-response
-include::{snippets}/get-posts/http-response.adoc[]
+.http-postsResponse
+include::{snippets}/get-posts/http-postsResponse.adoc[]
 
-.response-fields
-include::{snippets}/get-posts/response-fields.adoc[]
+.postsResponse-fields
+include::{snippets}/get-posts/postsResponse-fields.adoc[]
 
 '''
 === 전체 포스트 글 조회
@@ -104,11 +104,11 @@ include::{snippets}/gets-posts/http-request.adoc[]
 .request-parameters
 include::{snippets}/gets-posts/request-parameters.adoc[]
 
-.http-response
-include::{snippets}/gets-posts/http-response.adoc[]
+.http-postsResponse
+include::{snippets}/gets-posts/http-postsResponse.adoc[]
 
-.response-fields
-include::{snippets}/gets-posts/response-fields.adoc[]
+.postsResponse-fields
+include::{snippets}/gets-posts/postsResponse-fields.adoc[]
 '''
 
 === 특정 포스트 삭제
@@ -119,8 +119,8 @@ include::{snippets}/delete-Posts/http-request.adoc[]
 .path-parameters
 include::{snippets}/delete-Posts/path-parameters.adoc[]
 
-.http-response
-include::{snippets}/delete-Posts/http-response.adoc[]
+.http-postsResponse
+include::{snippets}/delete-Posts/http-postsResponse.adoc[]
 
 
 '''

@@ -1,5 +1,6 @@
 package com.codestates.pre012.member.mapper;
 
+
 import com.codestates.pre012.member.dto.MemberDto;
 import com.codestates.pre012.member.entity.Member;
 import org.mapstruct.Mapper;
@@ -9,7 +10,6 @@ import org.mapstruct.ReportingPolicy;
 public interface MemberMapper {
 
     Member memberPostDtoToMember(MemberDto.Post requestBody);
-    Member memberLoginDtoToMember(MemberDto.Login requestBody);
     MemberDto.Response memberToMemberResponseDto(Member member);
 
 }
