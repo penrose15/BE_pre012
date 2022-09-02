@@ -1,6 +1,7 @@
 package com.codestates.pre012.reply.dto;
 
 
+import com.codestates.pre012.member.dto.MemberDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -21,6 +22,7 @@ public class ReplyDto {
     @Getter
     public static class Patch {
 
+
         private String content;
     }
 
@@ -31,6 +33,8 @@ public class ReplyDto {
     @NoArgsConstructor
     public static class Response {
 
+
+        private MemberDto.Response member;
         private String content;
 
     }

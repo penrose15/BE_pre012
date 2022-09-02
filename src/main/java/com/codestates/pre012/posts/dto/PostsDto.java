@@ -1,5 +1,6 @@
 package com.codestates.pre012.posts.dto;
 
+import com.codestates.pre012.member.dto.MemberDto;
 import com.codestates.pre012.reply.dto.ReplyDto;
 
 import lombok.*;
@@ -35,7 +36,6 @@ public class PostsDto {
 
     }
 
-    //전체페이지에 댓글을 내보낼 필요는 없으므로 전체 페이지 responseDTO 추가
     @Getter
     @Builder
     @AllArgsConstructor
@@ -45,17 +45,7 @@ public class PostsDto {
         private String title;
         private String content;
         private int view;
+        private MemberDto.Response member;
         private List<ReplyDto.Response> replies;
     }
-
-    @Getter
-    @Builder
-    @AllArgsConstructor
-    public static class ReplyResponse {
-
-        private long replyId;
-        private String content;
-    }
-
-
 }

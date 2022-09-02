@@ -52,6 +52,9 @@ public class PostsService {
     public Posts lookPosts(long postId) {
 
         Posts posts = existPosts(postId);
+        String username = posts.getMember().getUsername();
+        System.out.println("==============================================" + username);
+
         int count = postsRepository.updateView(postId);
 
         return posts;
