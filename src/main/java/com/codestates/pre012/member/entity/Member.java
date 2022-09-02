@@ -36,7 +36,6 @@ public class Member extends BaseEntity {
     private String email;
     private String roles; // User, MANAGER, ADMIN
 
-
     private String provider;
     private String providerId;
 
@@ -53,6 +52,7 @@ public class Member extends BaseEntity {
 
     @OneToMany(mappedBy = "member")
     private List<Posts> posts;
+
 
     @OneToMany(mappedBy = "posts")
     private List<Reply> reply;

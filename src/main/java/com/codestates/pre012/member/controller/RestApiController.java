@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/v1/member")
 @Validated
 public class RestApiController {
-    private final MemberService memberService;
 
+    private final MemberService memberService;
     private final MemberMapper mapper;
 
     // 추가
@@ -34,15 +34,18 @@ public class RestApiController {
         return new ResponseEntity<>("user 권한을 가지고 있습니다.", HttpStatus.OK);
     }
 
+
     @GetMapping("/manager")
     public ResponseEntity manager() {
         return new ResponseEntity<>("manager 권한을 가지고 있습니다.", HttpStatus.OK);
     }
 
+
     @GetMapping("/admin")
     public ResponseEntity admin() {
         return new ResponseEntity<>("admin 권한을 가지고 있습니다. ", HttpStatus.OK);
     }
+
 
     @GetMapping("/login")
     public ResponseEntity login() {

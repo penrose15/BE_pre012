@@ -33,6 +33,7 @@ public class PostsDto {
         private long postsId;
         private String title;
         private String content;
+        private int view;
 
     }
 

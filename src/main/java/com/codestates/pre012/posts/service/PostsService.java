@@ -24,9 +24,6 @@ public class PostsService {
 
     private final PostsRepository postsRepository;
 
-    private final ReplyRepository replyRepository;
-
-
     public Posts savedPosts(Posts postsPost, Member member) {
 
         postsPost.setMember(member);
