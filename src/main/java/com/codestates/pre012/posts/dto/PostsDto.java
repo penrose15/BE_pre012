@@ -3,6 +3,7 @@ package com.codestates.pre012.posts.dto;
 import com.codestates.pre012.member.dto.MemberDto;
 import com.codestates.pre012.reply.dto.ReplyDto;
 
+import com.codestates.pre012.tag.dto.TagDto;
 import lombok.*;
 
 import javax.validation.constraints.NotBlank;
@@ -22,6 +23,8 @@ public class PostsDto {
 
         @NotBlank(message = "공백이 될 수 없습니다.")
         private String content;
+
+        private List<TagDto.Post> tags;
     }
 
 
@@ -33,6 +36,7 @@ public class PostsDto {
         private long postsId;
         private String title;
         private String content;
+        private List<TagDto.Response> tags;
 
     }
 
@@ -47,5 +51,6 @@ public class PostsDto {
         private int view;
         private MemberDto.Response member;
         private List<ReplyDto.Response> replies;
+        private List<TagDto.Response> tags;
     }
 }

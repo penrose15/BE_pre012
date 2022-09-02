@@ -1,5 +1,6 @@
 package com.codestates.pre012.tag.service;
 
+import com.codestates.pre012.exception.BusinessLogicException;
 import com.codestates.pre012.posts.entity.Posts;
 import com.codestates.pre012.posts.service.PostsService;
 import com.codestates.pre012.tag.entity.Tag;
@@ -15,8 +16,6 @@ import java.util.Optional;
 @Service
 public class TagPostService {
 
-    private final TagService tagService;
-    private final PostsService postsService;
     private final TagPostsRepository tagPostsRepository;
     private final TagRepository tagRepository;
 
@@ -29,11 +28,17 @@ public class TagPostService {
     }
 
     public TagPosts updateTagPosts(TagPosts tagPosts, Tag tag) {
-        Optional<Tag> findTag = tagRepository.findByTagList(tag.getTagList());
-        Tag tag1 = findTag.orElseGet(tagPosts::getTag);
-        tagPosts.setTag(tag1);
+        Optional<TagPosts> findTagPosts = tagPostsRepository.findById(tagPosts.getTagPostsId());
+        TagPosts tagPosts1 = findTagPosts.orElseThrow(() ->new RuntimeException("# 존재하지 않는 tagPosts"));
 
-        return tagPostsRepository.save(tagPosts);
+        Optional<Tag> findTag = tagRepository.findByTagList(tag.getTagList());
+
+        Tag tag1 = findTag.orElseGet(() -> tagRepository.save(new Tag(tag.getTagList())));
+        if(!tagPosts1.getTag().getTagList().equals(tag1.getTagList())) {
+            tagPosts1.setTag(tag1);
+        }
+
+        return tagPostsRepository.save(tagPosts1);
     }
 
     public void deleteTagPosts(long tagPostsId) {

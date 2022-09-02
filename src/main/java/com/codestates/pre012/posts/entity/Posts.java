@@ -4,6 +4,7 @@ package com.codestates.pre012.posts.entity;
 import com.codestates.pre012.baseEntity.BaseEntity;
 import com.codestates.pre012.member.entity.Member;
 import com.codestates.pre012.reply.entity.Reply;
+import com.codestates.pre012.tag.entity.TagPosts;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -42,5 +43,8 @@ public class Posts extends BaseEntity {
 
     @Column
     private int view;
+
+    @OneToMany(mappedBy = "posts", fetch = LAZY)
+    private List<TagPosts> tagPosts = new ArrayList<>();
 
 }

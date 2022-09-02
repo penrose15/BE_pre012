@@ -16,7 +16,7 @@ public class TagService {
     private final TagPostsRepository tagPostsRepository;
     public Tag saveOrFindTag(Tag tag) {
         Optional<Tag> findTag = tagRepository.findByTagList(tag.getTagList());
-        return findTag.orElseGet(() -> tagRepository.save(findTag.get()));
+        return findTag.orElseGet(() -> tagRepository.save(new Tag(tag.getTagList())));
     }
 
 }

@@ -22,4 +22,8 @@ public class Tag {
     public enum TagList {
         Java, Spring, C, NodeJs, Python, MySql;
     }
+
+    public Tag(TagList tagList) {
+        this.tagList = tagList;
+    }
 }
