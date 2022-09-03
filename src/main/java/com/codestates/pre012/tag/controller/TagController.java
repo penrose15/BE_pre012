@@ -7,7 +7,6 @@ import com.codestates.pre012.tag.converter.StringToTagDto;
 import com.codestates.pre012.tag.entity.Tag;
 import com.codestates.pre012.tag.service.TagPostService;
 import com.codestates.pre012.tag.service.TagService;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;

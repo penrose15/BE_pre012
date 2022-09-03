@@ -8,11 +8,9 @@ import com.codestates.pre012.tag.entity.TagPosts;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.BatchSize;
 
 import javax.persistence.*;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import static javax.persistence.FetchType.LAZY;

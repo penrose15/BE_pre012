@@ -2,12 +2,9 @@ package com.codestates.pre012.posts.dto;
 
 import com.codestates.pre012.member.dto.MemberDto;
 import com.codestates.pre012.reply.dto.ReplyDto;
-
 import com.codestates.pre012.tag.dto.TagDto;
 import lombok.*;
-
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Positive;
 
 import java.util.List;
 
