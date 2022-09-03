@@ -8,6 +8,9 @@ import com.codestates.pre012.tag.entity.Tag;
 import com.codestates.pre012.tag.repository.TagPostsRepository;
 import com.codestates.pre012.tag.repository.TagRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -27,6 +30,13 @@ public class TagService {
     public Tag verifiedTag(Tag tag) {
         Optional<Tag> tags = tagRepository.findByTagList(tag.getTagList());
         return tags.orElseThrow(() -> new BusinessLogicException(ExceptionCode.TAG_NOT_FOUND));
+    }
+
+    public Page<Tag> findAll(int page, int size) {
+        Pageable pageable = PageRequest.of(page - 1, size);
+        Page<Tag> tagPage = tagRepository.findAll(pageable);
+
+        return tagPage;
     }
 
 

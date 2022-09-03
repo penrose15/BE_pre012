@@ -1,32 +1,46 @@
 package com.codestates.pre012.tag.controller;
 
+import com.codestates.pre012.dto.MultiResponseDto;
 import com.codestates.pre012.posts.entity.Posts;
 import com.codestates.pre012.posts.mapper.PostsMapper;
 import com.codestates.pre012.tag.entity.Tag;
 import com.codestates.pre012.tag.service.TagPostService;
+import com.codestates.pre012.tag.service.TagService;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RequiredArgsConstructor
-@RestController("/v1/tag")
+@RestController
+@RequestMapping("/v1/tag")
 public class TagController {
 
     private final TagPostService tagPostService;
+    private final TagService tagService;
     private final PostsMapper postsMapper;
 
-    @GetMapping("/{tag}")
-    public ResponseEntity findPosts(@PathVariable("tag") String tag) {
-        Tag.TagList tagList = Tag.TagList.valueOf(tag);
-        List<Posts> postsList = tagPostService.findPostsByTag(tagList);
+    @GetMapping
+    public ResponseEntity showTags(@RequestParam int page,
+                                   @RequestParam int size) {
+        Page<Tag> tagPage = tagService.findAll(page, size);
+        List<Tag> tags = tagPage.getContent();
 
-        return new ResponseEntity<>(postsMapper.postsToPostsDtoResponses(postsList), HttpStatus.OK);
+        return new ResponseEntity<>(new MultiResponseDto<>(tags, tagPage), HttpStatus.OK);
+    }
+
+    @GetMapping("/{tag}")
+    public ResponseEntity findPosts(@PathVariable("tag") String tag,
+                                    @RequestParam int page,
+                                    @RequestParam int size) {
+        Tag.TagList tagList = Tag.TagList.valueOf(tag);
+        Page<Posts> postsPage = tagPostService.findPostsByTag(tagList, page, size);
+        List<Posts> postsList = postsPage.getContent();
+
+        return new ResponseEntity<>(new MultiResponseDto<>(postsMapper.postsToPostsDtoResponses(postsList),postsPage), HttpStatus.OK);
     }
 }

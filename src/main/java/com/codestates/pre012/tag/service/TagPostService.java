@@ -8,6 +8,9 @@ import com.codestates.pre012.tag.entity.TagPosts;
 import com.codestates.pre012.tag.repository.TagPostsRepository;
 import com.codestates.pre012.tag.repository.TagRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -38,11 +41,13 @@ public class TagPostService {
         tagPostsRepository.delete(verifiedTagPosts);
     }
 
-    public List<Posts> findPostsByTag(Tag.TagList tagList) {
+    public Page<Posts> findPostsByTag(Tag.TagList tagList, int page, int size) {
 
-        List<Posts> list = tagPostsRepository.findPostsByTag(tagList);
+        Pageable pageable = PageRequest.of(page, size);
 
-        return list;
+        Page<Posts> postsPage = tagPostsRepository.findPostsByTag(tagList, pageable);
+
+        return postsPage;
     }
 
 }
