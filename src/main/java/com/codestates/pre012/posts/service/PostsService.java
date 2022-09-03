@@ -46,7 +46,8 @@ public class PostsService {
                 list.add(tagPostService.saveTagPosts(posts, new TagPosts(), value));
                 posts.setTagPosts(list);
             }
-        }
+        } else throw new BusinessLogicException(ExceptionCode.THERE_MUST_BE_AT_LEAST_ONE_TAG);
+        //만약 태그 작성x 시 태그는 최소 1개 이상 작성해야 한다.
 
         return postsRepository.save(posts);
     }
@@ -62,6 +63,7 @@ public class PostsService {
         Optional.ofNullable(posts.getContent())
                 .ifPresent(findPosts::setContent);
 
+        //태그가 null인 경우 수정 전의 tag유지, tags존재시 변경
         if (tags != null && !tags.isEmpty()) {
             List<TagPosts> tagPosts;
             if(findPosts.getTagPosts() != null){
