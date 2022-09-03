@@ -65,18 +65,12 @@ public class PostsService {
 
         //태그가 null인 경우 수정 전의 tag유지, tags존재시 변경
         if (tags != null && !tags.isEmpty()) {
-            List<TagPosts> tagPosts;
-            if(findPosts.getTagPosts() != null){
-                tagPosts = findPosts.getTagPosts();
-                for (TagPosts tagPost : tagPosts) {
-                    tagPostService.deleteTagPosts(tagPost.getTagPostsId());
-                }
-            }
-            tagPosts = new ArrayList<>();
+            List<TagPosts> tagPosts = new ArrayList<>();
             for (Tag tag : tags) {
                 tagPosts.add(tagPostService.saveTagPosts(findPosts, new TagPosts(), tag));
             }
             findPosts.setTagPosts(tagPosts);
+            return postsRepository.save(findPosts);
         }
         return postsRepository.save(findPosts);
 
