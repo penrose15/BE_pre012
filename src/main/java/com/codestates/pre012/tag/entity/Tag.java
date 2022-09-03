@@ -20,7 +20,14 @@ public class Tag {
     private TagList tagList;
 
     public enum TagList {
-        Java, Spring, C, NodeJs, Python, MySql;
+        JAVA,
+        SPRING,
+        C,
+        NODEJS,
+        PYTHON,
+        MYSQL,
+        JAVASCRIPT;
+
     }
 
     public Tag(TagList tagList) {

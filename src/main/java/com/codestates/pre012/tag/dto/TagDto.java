@@ -8,6 +8,7 @@ public class TagDto {
     @Getter
     @AllArgsConstructor
     @NoArgsConstructor
+    @Builder
     public static class Post{
         private Tag.TagList tagList;
     }
@@ -18,4 +19,6 @@ public class TagDto {
     public static class Response {
         private Tag.TagList tagList;
     }
+
+
 }

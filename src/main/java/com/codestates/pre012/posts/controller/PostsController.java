@@ -9,6 +9,7 @@ import com.codestates.pre012.posts.dto.PostsDto;
 import com.codestates.pre012.posts.entity.Posts;
 import com.codestates.pre012.posts.mapper.PostsMapper;
 import com.codestates.pre012.posts.service.PostsService;
+import com.codestates.pre012.tag.converter.StringToTagDto;
 import com.codestates.pre012.tag.dto.TagDto;
 import com.codestates.pre012.tag.entity.Tag;
 import com.codestates.pre012.tag.entity.TagPosts;
@@ -35,6 +36,7 @@ public class PostsController {
     private final PostsService postsService;
     private final PostsMapper mapper;
     private final TagMapper tagMapper;
+    private final StringToTagDto stringToTagDto;
 
     @PostMapping("/create")
     public ResponseEntity createPosts(@Valid @RequestBody PostsDto.Post posts,
@@ -42,7 +44,9 @@ public class PostsController {
 
         Member member = principal.getMember();
         Posts findPosts = mapper.postsPostDtoToPosts(posts);
-        List<Tag> tags = tagMapper.tagDtoPostToTags(posts.getTags());
+        List<TagDto.Post> responseList = stringToTagDto.tagListToTagDtoResponse(posts.getTags());
+
+        List<Tag> tags = tagMapper.tagDtoPostToTags(responseList);
         Posts response = postsService.savedPosts(findPosts,member, tags);
 
         return new ResponseEntity<>(new SingleResponseDto<>(mapper.postsToPostsResponse(response, tags)), HttpStatus.CREATED);
@@ -54,8 +58,9 @@ public class PostsController {
                                      @AuthenticationPrincipal PrincipalDetails principal) {
 
         Posts requestPosts = mapper.postsPostDtoToPosts(posts);
+        List<TagDto.Post> responseList = stringToTagDto.tagListToTagDtoResponse(posts.getTags());
 
-        List<Tag> tags = tagMapper.tagDtoPostToTags(posts.getTags());
+        List<Tag> tags = tagMapper.tagDtoPostToTags(responseList);
         Posts response = postsService.updatePosts(postsId ,requestPosts ,principal.getMember(),tags);
         List<Tag> tagList = response.getTagPosts().stream()
                 .map(TagPosts::getTag).collect(Collectors.toList());
@@ -94,4 +99,6 @@ public class PostsController {
 
         return new ResponseEntity<>("삭제 완료", HttpStatus.NO_CONTENT);
     }
+
+
 }

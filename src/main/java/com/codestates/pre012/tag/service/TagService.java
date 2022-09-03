@@ -27,11 +27,6 @@ public class TagService {
         return findTag.orElseGet(() -> tagRepository.save(new Tag(tag.getTagList())));
     }
 
-    public Tag verifiedTag(Tag tag) {
-        Optional<Tag> tags = tagRepository.findByTagList(tag.getTagList());
-        return tags.orElseThrow(() -> new BusinessLogicException(ExceptionCode.TAG_NOT_FOUND));
-    }
-
     public Page<Tag> findAll(int page, int size) {
         Pageable pageable = PageRequest.of(page - 1, size);
         Page<Tag> tagPage = tagRepository.findAll(pageable);

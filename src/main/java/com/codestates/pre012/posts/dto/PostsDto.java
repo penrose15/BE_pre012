@@ -24,7 +24,7 @@ public class PostsDto {
         @NotBlank(message = "공백이 될 수 없습니다.")
         private String content;
 
-        private List<TagDto.Post> tags;
+        private List<String> tags;
     }
 
 

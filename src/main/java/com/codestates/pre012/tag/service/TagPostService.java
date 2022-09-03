@@ -43,7 +43,7 @@ public class TagPostService {
 
     public Page<Posts> findPostsByTag(Tag.TagList tagList, int page, int size) {
 
-        Pageable pageable = PageRequest.of(page, size);
+        Pageable pageable = PageRequest.of(page-1, size);
 
         Page<Posts> postsPage = tagPostsRepository.findPostsByTag(tagList, pageable);
 
