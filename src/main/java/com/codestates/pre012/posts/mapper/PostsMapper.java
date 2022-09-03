@@ -18,7 +18,7 @@ public interface PostsMapper {
 
     Posts postsPostDtoToPosts(PostsDto.Post requestBody);
     PostsDto.PostsResponse postsToPostsResponse(Posts posts, List<Tag> tags);
-    PostsDto.SearchResponse postsToSearchResponse(Posts posts);
+    PostsDto.SearchResponse postsToSearchResponse(Posts posts, List<Tag> tags);
     List<PostsDto.PostsResponse> postsToPostsDtoResponses(List<Posts> posts);
 
 }

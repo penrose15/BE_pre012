@@ -21,7 +21,7 @@ public class TagPosts {
     @JoinColumn(name = "postsId")
     private Posts posts;
 
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.PERSIST})
     @JoinColumn(name = "tagId")
     private Tag tag;
 }

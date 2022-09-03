@@ -39,20 +39,19 @@ public class PostsService {
 
         postsPost.setMember(member);
         Posts posts = postsRepository.save(postsPost);
-        List<TagPosts> list = new ArrayList<>();
 
-        for(int i = 0; i< tag.size(); i++) {
-            tag.set(i ,tagService.saveOrFindTag(tag.get(i)));
+        if(tag != null) {
+            List<TagPosts> list = new ArrayList<>();
+            for (Tag value : tag) {
+                list.add(tagPostService.saveTagPosts(posts, new TagPosts(), value));
+                posts.setTagPosts(list);
+            }
         }
-        for(int i = 0; i< tag.size(); i++) {
-            list.add(tagPostService.saveTagPosts(posts, new TagPosts(), tag.get(i)));
-            posts.setTagPosts(list);
-        }
+
         return postsRepository.save(posts);
     }
 
     public Posts updatePosts(Long postsId,Posts posts ,Member member, List<Tag> tags) {
-
 
         Posts findPosts = existPosts(postsId);
 
@@ -64,11 +63,17 @@ public class PostsService {
                 .ifPresent(findPosts::setContent);
 
         if (tags != null && !tags.isEmpty()) {
-            List<TagPosts> tagPosts = findPosts.getTagPosts();
-            for (int i = 0; i < tagPosts.size(); i++) {
-                tagPosts.set(i, tagPostService.updateTagPosts(tagPosts.get(i), tags.get(i)));
+            List<TagPosts> tagPosts;
+            if(findPosts.getTagPosts() != null){
+                tagPosts = findPosts.getTagPosts();
+                for (TagPosts tagPost : tagPosts) {
+                    tagPostService.deleteTagPosts(tagPost.getTagPostsId());
+                }
             }
-
+            tagPosts = new ArrayList<>();
+            for (Tag tag : tags) {
+                tagPosts.add(tagPostService.saveTagPosts(findPosts, new TagPosts(), tag));
+            }
             findPosts.setTagPosts(tagPosts);
         }
         return postsRepository.save(findPosts);
@@ -95,6 +100,11 @@ public class PostsService {
     public void deletePosts(long postId, Member member) {
 
         Posts findPosts = existPosts(postId);
+        List<TagPosts> tagPosts = findPosts.getTagPosts();
+        for(TagPosts t : tagPosts) {
+            tagPostService.deleteTagPosts(t.getTagPostsId());
+        }
+
         if(findPosts.getMember().getPassword().equals(member.getPassword())) {
             postsRepository.delete(findPosts);
         }

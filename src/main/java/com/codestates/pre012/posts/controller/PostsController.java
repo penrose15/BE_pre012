@@ -68,8 +68,10 @@ public class PostsController {
     public ResponseEntity viewPosts(@PathVariable("posts-id") @Positive Long postsId) {
 
         Posts response = postsService.lookPosts(postsId);
+        List<Tag> tags = response.getTagPosts().stream()
+                .map(TagPosts::getTag).collect(Collectors.toList());
 
-        return new ResponseEntity<>(new SingleResponseDto<>(mapper.postsToSearchResponse(response)), HttpStatus.OK);
+        return new ResponseEntity<>(new SingleResponseDto<>(mapper.postsToSearchResponse(response, tags)), HttpStatus.OK);
     }
 
     @GetMapping
