@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -19,7 +20,6 @@ import java.util.Optional;
 public class TagPostService {
 
     private final TagPostsRepository tagPostsRepository;
-    private final TagRepository tagRepository;
     private final TagService tagService;
 
     public TagPosts saveTagPosts(Posts posts,TagPosts tagPosts ,Tag tag) {
@@ -36,6 +36,13 @@ public class TagPostService {
         TagPosts verifiedTagPosts = tagPosts.orElseThrow(() -> new RuntimeException("tagpost 존재하지 않음"));
 
         tagPostsRepository.delete(verifiedTagPosts);
+    }
+
+    public List<Posts> findPostsByTag(Tag.TagList tagList) {
+
+        List<Posts> list = tagPostsRepository.findPostsByTag(tagList);
+
+        return list;
     }
 
 }

@@ -29,10 +29,7 @@ import java.util.Optional;
 public class PostsService {
 
     private final PostsRepository postsRepository;
-
-    private final ReplyRepository replyRepository;
     private final TagPostService tagPostService;
-    private final TagService tagService;
 
 
     public Posts savedPosts(Posts postsPost, Member member, List<Tag> tag) {
