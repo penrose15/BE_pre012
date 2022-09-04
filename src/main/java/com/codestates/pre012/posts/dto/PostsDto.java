@@ -46,8 +46,9 @@ public class PostsDto {
         private String title;
         private String content;
         private int view;
-        private MemberDto.Response member;
-        private List<ReplyDto.Response> replies;
+        private String username;
         private List<TagDto.Response> tags;
+        private List<ReplyDto.Response> replies;
+
     }
 }

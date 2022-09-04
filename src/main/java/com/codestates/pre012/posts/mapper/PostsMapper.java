@@ -16,7 +16,7 @@ public interface PostsMapper {
 
     Posts postsPostDtoToPosts(PostsDto.Post requestBody);
     PostsDto.PostsResponse postsToPostsResponse(Posts posts, List<Tag> tags);
-    PostsDto.SearchResponse postsToSearchResponse(Posts posts, List<Tag> tags);
+    PostsDto.SearchResponse postsToSearchResponse(Posts posts, List<Tag> tags, String username);
     default List<PostsDto.PostsResponse> postsToPostsDtoResponses(List<Posts> posts) {
         List<PostsDto.PostsResponse> list = posts.stream()
                 .map(p -> PostsDto.PostsResponse.builder()

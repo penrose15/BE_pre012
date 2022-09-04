@@ -75,8 +75,9 @@ public class PostsController {
         Posts response = postsService.lookPosts(postsId);
         List<Tag> tags = response.getTagPosts().stream()
                 .map(TagPosts::getTag).collect(Collectors.toList());
+        String username = response.getMember().getUsername();
 
-        return new ResponseEntity<>(new SingleResponseDto<>(mapper.postsToSearchResponse(response, tags)), HttpStatus.OK);
+        return new ResponseEntity<>(new SingleResponseDto<>(mapper.postsToSearchResponse(response, tags, username)), HttpStatus.OK);
     }
 
     @GetMapping

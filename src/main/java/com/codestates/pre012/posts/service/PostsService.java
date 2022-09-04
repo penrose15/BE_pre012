@@ -6,12 +6,9 @@ import com.codestates.pre012.member.entity.Member;
 import com.codestates.pre012.posts.entity.Posts;
 import com.codestates.pre012.posts.repository.PostsRepository;
 
-import com.codestates.pre012.reply.repository.ReplyRepository;
-
 import com.codestates.pre012.tag.entity.Tag;
 import com.codestates.pre012.tag.entity.TagPosts;
 import com.codestates.pre012.tag.service.TagPostService;
-import com.codestates.pre012.tag.service.TagService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -33,11 +30,11 @@ public class PostsService {
 
 
     public Posts savedPosts(Posts postsPost, Member member, List<Tag> tag) {
-
         postsPost.setMember(member);
         Posts posts = postsRepository.save(postsPost);
 
-        if(tag != null) {
+        if(tag != null && tag.size() != 0) {
+            if(tag.size()>3) throw new BusinessLogicException(ExceptionCode.ONLY_WRITE_UP_TO_THREE);
             List<TagPosts> list = new ArrayList<>();
             for (Tag value : tag) {
                 list.add(tagPostService.saveTagPosts(posts, new TagPosts(), value));
@@ -45,12 +42,10 @@ public class PostsService {
             }
         } else throw new BusinessLogicException(ExceptionCode.THERE_MUST_BE_AT_LEAST_ONE_TAG);
         //만약 태그 작성x 시 태그는 최소 1개 이상 작성해야 한다.
-
         return postsRepository.save(posts);
     }
 
     public Posts updatePosts(Long postsId,Posts posts ,Member member, List<Tag> tags) {
-
         Posts findPosts = existPosts(postsId);
 
         if(!findPosts.getMember().getPassword().equals(member.getPassword())) throw new RuntimeException("자신의 글만 수정 가능합니다.");
@@ -79,13 +74,11 @@ public class PostsService {
     }
 
     public Posts lookPosts(long postId) {
-
         Posts posts = existPosts(postId);
         String username = posts.getMember().getUsername();
         System.out.println("==============================================" + username);
 
         int count = postsRepository.updateView(postId);
-
         return posts;
     }
 
@@ -95,7 +88,6 @@ public class PostsService {
 
 
     public void deletePosts(long postId, Member member) {
-
         Posts findPosts = existPosts(postId);
         List<TagPosts> tagPosts = findPosts.getTagPosts();
         for(TagPosts t : tagPosts) {
@@ -113,8 +105,9 @@ public class PostsService {
 
         Optional<Posts> existPosts = postsRepository.findById(postsId);
 
-        return existPosts.orElseThrow(() ->
+        Posts posts = existPosts.orElseThrow(() ->
                 new BusinessLogicException(ExceptionCode.POSTS_NOT_FOUND));
+        return posts;
     }
 
 
