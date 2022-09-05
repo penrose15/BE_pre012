@@ -67,6 +67,7 @@ logging:
         orm:
           jpa: DEBUG
 
+
 server:
   servlet:
     encoding:

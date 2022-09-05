@@ -26,7 +26,7 @@ public class StringToTagDto {
     }
 
     private List<Tag.TagList> stringToTagList(List<String> tag) {
-        return tag.stream()
+        return tag.stream().sorted()
                 .map(t -> {
                     t = t.replaceAll("[^\uAC00-\uD7A3xfe0-9a-zA-Z]","");
                     t = t.toUpperCase();
@@ -36,7 +36,7 @@ public class StringToTagDto {
                         e.printStackTrace();
                     }
                     throw new BusinessLogicException(ExceptionCode.TAG_NOT_FOUND);
-                }).collect(Collectors.toList());
+                }).distinct().collect(Collectors.toList());
     }
 
     public Tag.TagList StringToTagList(String tag) {

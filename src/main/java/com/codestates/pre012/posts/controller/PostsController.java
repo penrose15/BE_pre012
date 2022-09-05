@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Positive;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -96,7 +97,9 @@ public class PostsController {
     public ResponseEntity deletePosts(@PathVariable("posts-Id") @Positive Long postId,
                                       @AuthenticationPrincipal PrincipalDetails principal) {
 
+        System.out.println("delete controller");
         postsService.deletePosts(postId, principal.getMember());
+
 
         return new ResponseEntity<>("삭제 완료", HttpStatus.NO_CONTENT);
     }

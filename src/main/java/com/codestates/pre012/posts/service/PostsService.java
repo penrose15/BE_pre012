@@ -88,12 +88,14 @@ public class PostsService {
 
 
     public void deletePosts(long postId, Member member) {
+        System.out.println("delete service start");
         Posts findPosts = existPosts(postId);
         List<TagPosts> tagPosts = findPosts.getTagPosts();
         for(TagPosts t : tagPosts) {
             tagPostService.deleteTagPosts(t.getTagPostsId());
         }
 
+        System.out.println("delete repository");
         if(findPosts.getMember().getPassword().equals(member.getPassword())) {
             postsRepository.delete(findPosts);
         }
@@ -108,6 +110,7 @@ public class PostsService {
         Posts posts = existPosts.orElseThrow(() ->
                 new BusinessLogicException(ExceptionCode.POSTS_NOT_FOUND));
         return posts;
+
     }
 
 
