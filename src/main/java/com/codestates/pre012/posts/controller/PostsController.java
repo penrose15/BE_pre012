@@ -58,6 +58,7 @@ public class PostsController {
                                      @Valid @RequestBody PostsDto.Post posts,
                                      @AuthenticationPrincipal PrincipalDetails principal) {
 
+
         Posts requestPosts = mapper.postsPostDtoToPosts(posts);
         List<TagDto.Post> responseList = stringToTagDto.tagListToTagDtoResponse(posts.getTags());
 
@@ -68,6 +69,7 @@ public class PostsController {
 
 
         return new ResponseEntity<>(new SingleResponseDto<>(mapper.postsToPostsResponse(response, tagList)), HttpStatus.OK);
+
     }
 
     @GetMapping("/{posts-id}")
