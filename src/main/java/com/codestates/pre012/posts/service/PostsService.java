@@ -26,10 +26,12 @@ import java.util.Optional;
 public class PostsService {
 
     private final PostsRepository postsRepository;
+
     private final TagPostService tagPostService;
 
 
     public Posts savedPosts(Posts postsPost, Member member, List<Tag> tag) {
+
         postsPost.setMember(member);
         Posts posts = postsRepository.save(postsPost);
 

@@ -22,7 +22,6 @@ public class ReplyDto {
     @Getter
     public static class Patch {
 
-
         private String content;
     }
 
