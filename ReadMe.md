@@ -1,2 +1,10 @@
-* posts와 member 디렉토리에 각각 dto, mapper, service, repository, controller 각각 추가했습니다
-* mapper어노테이션 추가를 위해 mapstruct관련 라이브러리를 build.gradle에 추가했습니다.
+### 스택오버플로우 클론 프로젝트
+
+* 기간 : 2022.09 (2주간 진행)
+* 기능 : 
+  * 게시글 업로드, 수정, 삭제
+  * 게시글 댓글 기능
+  * 게시글 좋아요 기능
+  * 태그 기능
+    * 태그 검색 기능 구현
+  * 메인 페이지 페이징 기능 구현
